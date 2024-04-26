@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include <QGraphicsView>
 #include <iostream>
 
 Game::Game(){
@@ -12,7 +13,7 @@ Game::Game(){
 
 void Game::start() {
     // Create the map
-    gameMap.generateMap(1280, 720);
+    gameMap.generateMap(25, 14);
     std::cout << "Map generated" << std::endl;
 
     // Set the user gold
@@ -32,4 +33,7 @@ void Game::show() {
     // Show the map
     gameMap.show();
     std::cout << "Map shown" << std::endl;
+
+    auto* view = new QGraphicsView(&gameMap);
+    view->show();
 }
