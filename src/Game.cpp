@@ -9,31 +9,48 @@
 Game::Game(){
     userGold = 0;
     waveNumber = 0;
+    this->setFocusPolicy(Qt::StrongFocus);
+    player = new Player(100, 0, 10, 10, 1, "", 0, 0);
 }
 
 void Game::start() {
     // Create the map
     gameMap.generateMap(25, 14);
-    std::cout << "Map generated" << std::endl;
 
     // Set the user gold
     userGold = 100;
-    std::cout << "User gold set" << std::endl;
 
     // Set the wave number
     waveNumber = 1;
-    std::cout << "Wave number set" << std::endl;
+
+    // Set the player position to the end tile
+    Tile* endTile = gameMap.getEndTile();
+    player->setPosition(endTile);
 
     // Start the game timer
     gameTimer.start(1000);
-    std::cout << "Game timer started" << std::endl;
+    player->getPlayerPosition();
 }
 
-void Game::show() {
-    // Show the map
-    gameMap.show();
-    std::cout << "Map shown" << std::endl;
-
-    auto* view = new QGraphicsView(&gameMap);
-    view->show();
+void Game::keyPressEvent(QKeyEvent *event) {
+    switch (event->key()) {
+        case Qt::Key_Left:
+            player->setPosition(player->getX() - 1, player->getY());
+            player->getPlayerPosition();
+            break;
+        case Qt::Key_Right:
+            player->setPosition(player->getX() + 1, player->getY());
+            player->getPlayerPosition();
+            break;
+        case Qt::Key_Up:
+            player->setPosition(player->getX(), player->getY() - 1);
+            player->getPlayerPosition();
+            break;
+        case Qt::Key_Down:
+            player->setPosition(player->getX(), player->getY() + 1);
+            player->getPlayerPosition();
+            break;
+        default:
+            QGraphicsView::keyPressEvent(event);
+    }
 }

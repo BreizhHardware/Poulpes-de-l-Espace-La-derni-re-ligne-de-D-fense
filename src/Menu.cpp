@@ -11,7 +11,9 @@
 #include <iostream>
 
 Menu::Menu(QWidget *parent) : QWidget(parent) {
+    game = nullptr;
     auto* layout = new QVBoxLayout(this);
+    view = new QGraphicsView(this);
 
     playButton = new QPushButton("Play", this);
     connect(playButton, &QPushButton::clicked, this, &Menu::onPlayButtonClicked);
@@ -28,23 +30,39 @@ Menu::Menu(QWidget *parent) : QWidget(parent) {
     quitButton = new QPushButton("Quit", this);
     connect(quitButton, &QPushButton::clicked, this, &Menu::onQuitButtonClicked);
     layout->addWidget(quitButton);
+
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+}
+
+void Menu::removeButtons() {
+    playButton->hide();
+    rulesButton->hide();
+    leaderboardButton->hide();
+    quitButton->hide();
 }
 
 void Menu::onPlayButtonClicked() {
+    // Remove buttons
+    removeButtons();
+    // Set the view size
+    view->setFixedSize(1280, 720);
+    view->show();
     // Create a new game
-    auto* game = new Game();
+    game = new Game();
     game->start();
 
-    // Hide the menu
-    hide();
-
     // Show the game
-    game->show();
+    view->setScene(&game->gameMap);
+    view->setFocus(); // Set focus to the QGraphicsView
 }
 
 void Menu::onRulesButtonClicked() {
+    removeButtons();
     auto* rules = new Rules();
-    rules->show();
+    view->setFixedSize(1280, 720);
+    view->show();
+    view->setScene(rules);
+    QObject::connect(rules, &Rules::returnToMenuSignal, this, &Menu::showMenu);
 }
 
 void Menu::onLeaderboardButtonClicked() {
@@ -56,3 +74,12 @@ void Menu::onQuitButtonClicked() {
     QApplication::quit();
 }
 
+void Menu::showMenu() {
+    view->hide();
+    this->setVisible(true);
+    this->raise();
+    playButton->show();
+    rulesButton->show();
+    leaderboardButton->show();
+    quitButton->show();
+}

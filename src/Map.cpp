@@ -82,3 +82,25 @@ void Map::show() {
         }
     }
 }
+
+Tile* Map::getEndTile() {
+    for (int i = 0; i < tiles.size(); i++){
+        for (int j = 0; j < tiles[i].size(); j++){
+            if (tiles[i][j]->getType() == Tile::End){
+                return tiles[i][j];
+            }
+        }
+    }
+    return nullptr;
+}
+
+Tile* Map::getStartTile() {
+    for (int i = 0; i < tiles.size(); i++){
+        for (int j = 0; j < tiles[i].size(); j++){
+            if (tiles[i][j]->getType() == Tile::Start){
+                return tiles[i][j];
+            }
+        }
+    }
+    return nullptr;
+}

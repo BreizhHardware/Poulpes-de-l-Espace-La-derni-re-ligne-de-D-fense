@@ -16,6 +16,10 @@ public:
 
     void show();
 
+    Tile* getEndTile();
+    Tile* getStartTile();
+
+
 private:
     QVector<QVector<Tile*>> tiles;
 };

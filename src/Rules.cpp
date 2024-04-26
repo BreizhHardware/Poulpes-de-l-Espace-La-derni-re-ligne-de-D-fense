@@ -4,16 +4,22 @@
 
 #include "Rules.h"
 #include <QVBoxLayout>
+#include <QLayout>
+#include <iostream>
 
-Rules::Rules(QWidget *parent) : QWidget(parent) {
-    QVBoxLayout* layout = new QVBoxLayout(this);
-
-    rulesLabel = new QLabel("Rules:\n"
-                            "1. Place towers on the map\n"
-                            "2. Click on the start button\n"
-                            "3. Watch the enemies go through the map\n"
-                            "4. If an enemy reaches the end, you lose\n"
-                            "5. If you kill all the enemies, you win\n"
-                            "6. Have fun!", this);
-    layout->addWidget(rulesLabel);
+Rules::Rules(QObject* parent) : QGraphicsScene(parent) {
+    auto* rulesText = new QGraphicsTextItem();
+    rulesText->setPlainText("Rules are simple:\n - You have to defend your base from the incoming waves of enemies.\n - You can place towers on the map to help you defend.\n - You can also move your personnal ship to help defend using the arrow key.\n - Good luck!");
+    addItem(rulesText);
+    // Add the return to menu button
+    auto* returnButton = new QPushButton("Return to menu");
+    QGraphicsProxyWidget* proxy = this->addWidget(returnButton);
+    proxy->setPos(0, rulesText->boundingRect().height());
+    // Connect the return to menu button to the returnToMenu slot
+    connect(returnButton, &QPushButton::clicked, this, &Rules::returnToMenu);
 }
+
+void Rules::returnToMenu() {
+    emit returnToMenuSignal();
+}
+

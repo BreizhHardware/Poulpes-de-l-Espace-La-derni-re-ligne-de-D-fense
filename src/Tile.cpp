@@ -28,3 +28,11 @@ Tile::Tile(Tile::Type type, QGraphicsItem *parent) : QGraphicsRectItem(parent), 
 Tile::Type Tile::getType() const {
     return type;
 }
+
+int Tile::gridX() {
+    return rect().x() / 50;
+}
+
+int Tile::gridY() {
+    return rect().y() / 50;
+}

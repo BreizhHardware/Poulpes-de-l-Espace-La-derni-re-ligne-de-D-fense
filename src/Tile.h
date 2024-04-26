@@ -15,6 +15,9 @@ public:
 
     Type getType() const;
 
+    int gridX();
+    int gridY();
+
 private:
     Type type;
 };

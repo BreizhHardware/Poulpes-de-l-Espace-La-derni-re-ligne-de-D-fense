@@ -5,17 +5,25 @@
 #ifndef POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_RULES_H
 #define POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_RULES_H
 #include <QWidget>
-#include <QLabel>
+#include <QGraphicsTextItem>
+#include <QGraphicsScene>
+#include <QPushButton>
+#include <QGraphicsProxyWidget>
 
-class Rules : public QWidget
+class Rules : public QGraphicsScene
 {
 Q_OBJECT
 public:
-    Rules(QWidget* parent = nullptr);
+    Rules(QObject* parent = nullptr);
 
 private:
-    QLabel* rulesLabel;
-};
+    QGraphicsTextItem* rulesLabel;
 
+private slots:
+    void returnToMenu();
+
+signals:
+    void returnToMenuSignal();
+};
 
 #endif //POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_RULES_H

@@ -23,6 +23,12 @@ add_executable(Poulpes_de_l_espace_La_derniere_ligne_de_defense ${sourceCode}
         src/Rules.cpp
         src/Rules.h
         src/Leaderboard.cpp
-        src/Leaderboard.h)
+        src/Leaderboard.h
+        src/Mob.cpp
+        src/Mob.h
+        src/Enemy.cpp
+        src/Enemy.h
+        src/Player.cpp
+        src/Player.h)
 
 target_link_libraries(Poulpes_de_l_espace_La_derniere_ligne_de_defense PRIVATE Qt6::Widgets Qt6::Sql)
