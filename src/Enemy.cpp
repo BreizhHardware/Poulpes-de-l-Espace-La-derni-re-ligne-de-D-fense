@@ -3,11 +3,14 @@
 //
 
 #include "Enemy.h"
+#include <QDebug>
 
-Enemy::Enemy(int health, int shield, int damage, float regenerationRate, int speed, std::string avatarPath, int x, int y, int coinDrop, int weight, Map& gameMap)
-        : Mob(health, shield, damage, regenerationRate, speed, avatarPath, x, y), gameMap(gameMap) {
+Enemy::Enemy(int health, int shield, int damage, float regenerationRate, int speed, std::string avatarPath,
+             int x, int y, int coinDrop, int weight, Map& gameMap, int id, Game& game)
+        : Mob(health, shield, damage, regenerationRate, speed, avatarPath, x, y), gameMap(gameMap), game(game) {
     this->coinDrop = coinDrop;
     this->weight = weight;
+    this->id = id;
     moveTimer = new QTimer();
     QPixmap pixmap(QString::fromStdString(avatarPath));
     if (pixmap.isNull()) {
@@ -45,6 +48,10 @@ Tile* Enemy::getNextPathTile() {
     return nextTile;
 }
 
+Tile* Enemy::getCurrentTile() {
+    return gameMap.getTile(x, y);
+}
+
 void Enemy::moveEnemy() {
     // Move the enemy to the next path tile
     nextStep = getNextPathTile();
@@ -52,6 +59,10 @@ void Enemy::moveEnemy() {
         x = nextStep->gridX();
         y = nextStep->gridY();
         graphics->setPos(x * 50, y * 50);
+        if (getCurrentTile() == gameMap.getEndTile()) {
+            game.player->takeDamage(getDamage());
+            game.removeEnemy(this);
+        }
     }
 }
 

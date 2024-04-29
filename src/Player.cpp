@@ -40,6 +40,9 @@ void Player::setPosition(int x, int y) {
         if (enemy->getX() == x && enemy->getY() == y) {
             // If there is an enemy, call the touchEnemy method
             touchEnemy(enemy);
+            if(health <= 0) {
+                return;
+            }
             break;
         }
     }
@@ -58,18 +61,13 @@ QGraphicsPixmapItem* Player::getGraphics() {
     return graphics;
 }
 
-int Player::getX() {
-    return x;
-}
-
-int Player::getY() {
-    return y;
-}
-
 void Player::touchEnemy(Enemy* enemy) {
     // Subtract the enemy's damage from the player's health
-    health -= enemy->getDamage();
+    takeDamage(enemy->getDamage());
 
+    if(health <= 0) {
+        return;
+    }
     // Add the enemy's coin drop to the player's gold
     game.userGold += enemy->getCoinDrop();
 
@@ -80,5 +78,13 @@ void Player::touchEnemy(Enemy* enemy) {
         game.currentEnemies.erase(it);
     }
     delete enemy;
+}
+
+void Player::takeDamage(int damage) {
+    health -= damage;
+    if (health <= 0) {
+        // Game over
+        game.gameOver();
+    }
 }
 

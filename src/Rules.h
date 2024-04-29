@@ -9,6 +9,7 @@
 #include <QGraphicsScene>
 #include <QPushButton>
 #include <QGraphicsProxyWidget>
+#include <QVBoxLayout>
 
 class Rules : public QGraphicsScene
 {

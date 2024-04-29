@@ -3,7 +3,6 @@
 //
 
 #include "Menu.h"
-#include <iostream>
 
 Menu::Menu(QWidget *parent) : QWidget(parent) {
     game = nullptr;
@@ -70,8 +69,12 @@ void Menu::onRulesButtonClicked() {
 }
 
 void Menu::onLeaderboardButtonClicked() {
+    removeButtons();
     auto* leaderboard = new Leaderboard();
-    leaderboard->show();
+    view->setFixedSize(1280, 720);
+    view->show();
+    view->setScene(leaderboard);
+    QObject::connect(leaderboard, &Leaderboard::returnToMenuSignal, this, &Menu::showMenu);
 }
 
 void Menu::onQuitButtonClicked() {
@@ -79,11 +82,33 @@ void Menu::onQuitButtonClicked() {
 }
 
 void Menu::showMenu() {
-    view->hide();
+    if(view){
+        view->hide();
+    }
     this->setVisible(true);
     this->raise();
     playButton->show();
     rulesButton->show();
     leaderboardButton->show();
     quitButton->show();
+}
+
+void Menu::showMenuGO() {
+    this->setVisible(true);
+    this->raise();
+    playButton->show();
+    rulesButton->show();
+    leaderboardButton->show();
+    quitButton->show();
+}
+
+void Menu::showGameOver() {
+    handleGameOver();
+    qDebug() << "Game Over signal received in Menu::showGameOver()";
+    // Return to the menu
+    showMenu();
+}
+
+void Menu::handleGameOver(){
+    game->deleteLater();
 }

@@ -8,17 +8,22 @@
 #include <QTimer>
 #include "Mob.h"
 #include "Map.h"
+#include "Game.h"
+
+class Game;
 
 class Enemy : public Mob
 {
     Q_OBJECT
 public:
-    Enemy(int health, int shield, int damage, float regenerationRate, int speed, std::string avatarPath, int x, int y, int coinDrop, int weight, Map& gameMap);
+    Enemy(int health, int shield, int damage, float regenerationRate, int speed, std::string avatarPath,
+          int x, int y, int coinDrop, int weight, Map& gameMap, int id, Game& game);
     int getWeight();
     int getCoinDrop();
     QGraphicsPixmapItem* getGraphics();
     void moveEnemy();
     Tile* getNextPathTile();
+    Tile* getCurrentTile();
 
 private slots:
     void onMoveTimerTimeout();
@@ -30,6 +35,8 @@ private:
     QGraphicsPixmapItem* graphics;
     QTimer* moveTimer;
     Tile* nextStep;
+    int id;
+    Game& game;
 };
 
 

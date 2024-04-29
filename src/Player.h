@@ -15,6 +15,8 @@
 
 class Game;
 
+class Enemy;
+
 class Player : public Mob
 {
     Game& game;
@@ -23,10 +25,9 @@ public:
     void setPosition(Tile* tile);
     void setPosition(int x, int y);
     void getPlayerPosition();
-    int getX();
-    int getY();
     QGraphicsPixmapItem* getGraphics();
     void touchEnemy(Enemy* enemy);
+    void takeDamage(int damage);
 
 private:
     QGraphicsPixmapItem* graphics;

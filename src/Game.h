@@ -12,11 +12,17 @@
 #include "Map.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Menu.h"
 
 class Player;
 
+class Enemy;
+
+class Menu;
+
 class Game : public QGraphicsView
 {
+    Q_OBJECT
 public:
     Game();
     void start();
@@ -25,14 +31,24 @@ public:
     void spawnEnemies(int waveNumber);
     int userGold;
     std::vector<Enemy*> currentEnemies;
+    void checkEnemyNumber();
+    void removeEnemy(Enemy* enemy);
+    Player* player;
+    void gameOver();
+    ~Game() override;
 
 private:
     QTimer gameTimer;
     int waveNumber;
-    Player* player;
     QGraphicsTextItem* healthDisplay;
     QGraphicsTextItem* goldDisplay;
     QGraphicsTextItem* waveDisplay;
+    QTimer enemyCheckTimer;
+    int totalWeight;
+    int targetWeight;
+    int x;
+    int y;
+    Menu* menu;
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;

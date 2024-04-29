@@ -17,7 +17,7 @@ Game::Game(){
     this->setFocusPolicy(Qt::StrongFocus);
 
     // Create the player object
-    player = new Player(100, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap, *this);
+    player = new Player(1, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap, *this);
 
     // Create the text items for the health, gold and wave number
     healthDisplay = new QGraphicsTextItem();
@@ -59,9 +59,19 @@ void Game::start() {
     // Set the wave number
     waveNumber = 1;
 
+    // Get the start tile of the map
+    Tile* startTile = gameMap.getStartTile();
+
+    // Get start tile coordinates
+    x = startTile->gridX();
+    y = startTile->gridY();
+
     // Set the player position to the end tile
     Tile* endTile = gameMap.getEndTile();
-    player->setPosition(endTile);
+
+    int xEnd = endTile->gridX();
+    int yEnd = endTile->gridY();
+    player->setPosition(xEnd, yEnd);
 
     // Start the game timer
     gameTimer.start(1000);
@@ -74,6 +84,10 @@ void Game::start() {
 
     // Spawn the enemies
     spawnEnemies(waveNumber);
+
+    // Start the enemy check timer
+    connect(&enemyCheckTimer, &QTimer::timeout, this, &Game::checkEnemyNumber);
+    enemyCheckTimer.start(1000);
 }
 
 void Game::keyPressEvent(QKeyEvent *event) {
@@ -102,22 +116,77 @@ void Game::updateDisplay() {
 }
 
 void Game::spawnEnemies(int waveNumber) {
-    int totalWeight = 0;
-    int targetWeight = waveNumber * waveNumber;
-    // Get the start tile of the map
-    Tile* startTile = gameMap.getStartTile();
+    totalWeight = 0;
+    targetWeight = waveNumber * waveNumber;
+    int enemyId = 0;
 
-    // Get start tile coordinates
-    int x = startTile->gridX();
-    int y = startTile->gridY();
+    QTimer* spawnTimer = new QTimer();
+    connect(spawnTimer, &QTimer::timeout, [this, waveNumber, &enemyId, spawnTimer](){
+        if(totalWeight < targetWeight){
+            // Create a new enemy on the start tile
+            auto* enemy = new Enemy(100, 0, 10, 0, 1, "../ressources/enemy.png", x, y, 10, 1, gameMap, enemyId, *this);
+            totalWeight += enemy->getWeight();
+            currentEnemies.push_back(enemy);
+            gameMap.addItem(enemy->getGraphics());
+            enemyId++;
+        } else {
+            spawnTimer->stop();
+            spawnTimer->deleteLater();
+        }
+    });
+    spawnTimer->start(1000);
+}
 
-    while (totalWeight < targetWeight){
-        // Create a new enemy on the start tile
-        Enemy* enemy = new Enemy(10, 0, 5, 0, 1, "../ressources/enemy.png", x, y, 1, 1, gameMap);
-        totalWeight += enemy->getWeight();
-        currentEnemies.push_back(enemy);
-        gameMap.addItem(enemy->getGraphics());
-        // Wait for 1 second before spawning the next enemy
-        QThread::sleep(1);
+void Game::checkEnemyNumber() {
+    if (currentEnemies.empty()){
+        waveNumber++;
+        spawnEnemies(waveNumber);
     }
+}
+
+void Game::removeEnemy(Enemy* enemy) {
+    if (enemy->getGraphics()->scene() == &gameMap) {
+        gameMap.removeItem(enemy->getGraphics());
+    }
+    auto it = std::find(currentEnemies.begin(), currentEnemies.end(), enemy);
+    if (it != currentEnemies.end()) {
+        currentEnemies.erase(it);
+    }
+    delete enemy;
+}
+
+void Game::gameOver() {
+    gameTimer.stop();
+    enemyCheckTimer.stop();
+
+    // Remove all the enemies from the game
+    for (auto* enemy : currentEnemies) {
+        if (enemy->getGraphics()->scene() == &gameMap) {
+            gameMap.removeItem(enemy->getGraphics());
+        }
+        delete enemy;
+    }
+    currentEnemies.clear();
+
+    // Remove the player from the game
+    if (player->getGraphics()->scene() == &gameMap) {
+        gameMap.removeItem(player->getGraphics());
+    }
+    delete player;
+
+    // Reset game variables
+    userGold = 0;
+    waveNumber = 0;
+    totalWeight = 0;
+    targetWeight = 0;
+
+    // Show the menu
+    menu->showMenuGO();
+
+    // Delete the game object
+    deleteLater();
+}
+
+Game::~Game() {
+    qDebug() << "Game object deleted";
 }

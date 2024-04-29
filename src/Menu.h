@@ -8,20 +8,26 @@
 #include "Rules.h"
 #include "Leaderboard.h"
 #include "MainWindow.h"
+#include "Gameover.h"
 #include <QVBoxLayout>
 #include <QApplication>
 #include <QWidget>
 #include <QPushButton>
 #include <QGraphicsView>
 
+class Game;
+
+class MainWindow;
+
 class Menu : public QWidget {
     Q_OBJECT
-
 public:
-    Menu(QWidget* parent = nullptr);
+    Menu(QWidget *parent = nullptr);
+    void showMenuGO();
 
 public slots:
     void showMenu();
+    void showGameOver();
 
 private slots:
     void onPlayButtonClicked();
@@ -30,14 +36,15 @@ private slots:
     void onQuitButtonClicked();
 
 private:
-    QPushButton* playButton;
-    QPushButton* rulesButton;
-    QPushButton* leaderboardButton;
-    QPushButton* quitButton;
-    QGraphicsView* view;
-    Game* game;
+    QPushButton *playButton;
+    QPushButton *rulesButton;
+    QPushButton *leaderboardButton;
+    QPushButton *quitButton;
+    QGraphicsView *view;
+    Game *game;
     void removeButtons();
-};
+    void handleGameOver();
 
+};
 
 #endif //POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_MENU_H
