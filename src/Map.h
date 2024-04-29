@@ -19,9 +19,15 @@ public:
     Tile* getEndTile();
     Tile* getStartTile();
 
+    QGraphicsScene scene;
+
+    int getWidth();
+    int getHeight();
 
 private:
     QVector<QVector<Tile*>> tiles;
+    int width;
+    int height;
 };
 
 

@@ -5,6 +5,11 @@
 #ifndef POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_MENU_H
 #define POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_MENU_H
 #include "Game.h"
+#include "Rules.h"
+#include "Leaderboard.h"
+#include "MainWindow.h"
+#include <QVBoxLayout>
+#include <QApplication>
 #include <QWidget>
 #include <QPushButton>
 #include <QGraphicsView>

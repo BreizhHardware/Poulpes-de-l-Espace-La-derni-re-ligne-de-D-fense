@@ -6,22 +6,25 @@
 #define POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_PLAYER_H
 #include "Mob.h"
 #include "Tile.h"
+#include "Map.h"
 #include <QGraphicsEllipseItem>
+#include <QGraphicsPixmapItem>
 #include <QBrush>
 
 class Player : public Mob
 {
 public:
-    Player(int health, int shield, int damage, float regenerationRate, int speed, std::string avatarPath, int x, int y);
+    Player(int health, int shield, int damage, float regenerationRate, int speed, const std::string& avatarPath, int x, int y, Map& gameMap);
     void setPosition(Tile* tile);
     void setPosition(int x, int y);
     void getPlayerPosition();
     int getX();
     int getY();
-    QGraphicsEllipseItem* getGraphics();
+    QGraphicsPixmapItem* getGraphics();
 
 private:
-    QGraphicsEllipseItem* graphics;
+    QGraphicsPixmapItem* graphics;
+    Map& gameMap;
 };
 
 

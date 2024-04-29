@@ -3,11 +3,6 @@
 //
 
 #include "Menu.h"
-#include "Game.h"
-#include "Rules.h"
-#include "Leaderboard.h"
-#include <QVBoxLayout>
-#include <QApplication>
 #include <iostream>
 
 Menu::Menu(QWidget *parent) : QWidget(parent) {
@@ -54,6 +49,15 @@ void Menu::onPlayButtonClicked() {
     // Show the game
     view->setScene(&game->gameMap);
     view->setFocus(); // Set focus to the QGraphicsView
+
+    // Get a pointer to the MainWindow
+    auto* mainWindow = qobject_cast<MainWindow*>(this->parentWidget());
+
+    // Set the Game object as the central widget of the MainWindow
+    if (mainWindow) {
+        mainWindow->setCentralWidget(game);
+        QTimer::singleShot(0, game, SLOT(setFocus()));
+    }
 }
 
 void Menu::onRulesButtonClicked() {

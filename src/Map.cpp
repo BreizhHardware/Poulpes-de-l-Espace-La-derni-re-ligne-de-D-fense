@@ -65,6 +65,9 @@ void Map::generateMap(const int width, const int height) {
             }
         }
     }
+
+    this->width = width;
+    this->height = height;
 }
 
 
@@ -103,4 +106,12 @@ Tile* Map::getStartTile() {
         }
     }
     return nullptr;
+}
+
+int Map::getWidth() {
+    return width;
+}
+
+int Map::getHeight() {
+    return height;
 }

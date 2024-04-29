@@ -17,7 +17,6 @@ public:
     Game();
     void start();
     Map gameMap;
-    void setPlayerPosition(int x, int y);
 
 private:
     int userGold;
