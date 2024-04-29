@@ -11,18 +11,14 @@ class Map : public QGraphicsScene
 {
 public:
     Map(QObject* parent = nullptr);
-
     void generateMap(int width, int height);
-
     void show();
-
     Tile* getEndTile();
     Tile* getStartTile();
-
     QGraphicsScene scene;
-
     int getWidth();
     int getHeight();
+    Tile* getTile(int x, int y);
 
 private:
     QVector<QVector<Tile*>> tiles;

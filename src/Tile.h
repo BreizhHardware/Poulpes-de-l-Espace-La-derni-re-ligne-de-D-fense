@@ -10,13 +10,11 @@ class Tile : public QGraphicsRectItem
 {
 public:
     enum Type { Road, Start, End, Tower, Other };
-
     Tile(Type type, QGraphicsItem* parent = nullptr);
-
     Type getType() const;
-
     int gridX();
     int gridY();
+    bool isPath();
 
 private:
     Type type;

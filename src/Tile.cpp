@@ -36,3 +36,7 @@ int Tile::gridX() {
 int Tile::gridY() {
     return rect().y() / 50;
 }
+
+bool Tile::isPath() {
+    return type == Road || type == Start || type == End;
+}

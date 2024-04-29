@@ -8,8 +8,12 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QKeyEvent>
+#include <QThread>
 #include "Map.h"
 #include "Player.h"
+#include "Enemy.h"
+
+class Player;
 
 class Game : public QGraphicsView
 {
@@ -18,9 +22,11 @@ public:
     void start();
     Map gameMap;
     void updateDisplay();
+    void spawnEnemies(int waveNumber);
+    int userGold;
+    std::vector<Enemy*> currentEnemies;
 
 private:
-    int userGold;
     QTimer gameTimer;
     int waveNumber;
     Player* player;

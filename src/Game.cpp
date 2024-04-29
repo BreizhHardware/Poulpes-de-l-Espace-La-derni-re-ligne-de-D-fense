@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+#include "Player.h"
 #include <QGraphicsView>
 #include <iostream>
 #include <QDebug>
@@ -16,7 +17,7 @@ Game::Game(){
     this->setFocusPolicy(Qt::StrongFocus);
 
     // Create the player object
-    player = new Player(100, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap);
+    player = new Player(100, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap, *this);
 
     // Create the text items for the health, gold and wave number
     healthDisplay = new QGraphicsTextItem();
@@ -70,6 +71,9 @@ void Game::start() {
 
     // Set focus to the QGraphicsView
     this->setFocus();
+
+    // Spawn the enemies
+    spawnEnemies(waveNumber);
 }
 
 void Game::keyPressEvent(QKeyEvent *event) {
@@ -95,4 +99,25 @@ void Game::updateDisplay() {
     healthDisplay->setPlainText("Health: " + QString::number(player->getHealth()));
     goldDisplay->setPlainText("Gold: " + QString::number(userGold));
     waveDisplay->setPlainText("Wave: " + QString::number(waveNumber));
+}
+
+void Game::spawnEnemies(int waveNumber) {
+    int totalWeight = 0;
+    int targetWeight = waveNumber * waveNumber;
+    // Get the start tile of the map
+    Tile* startTile = gameMap.getStartTile();
+
+    // Get start tile coordinates
+    int x = startTile->gridX();
+    int y = startTile->gridY();
+
+    while (totalWeight < targetWeight){
+        // Create a new enemy on the start tile
+        Enemy* enemy = new Enemy(10, 0, 5, 0, 1, "../ressources/enemy.png", x, y, 1, 1, gameMap);
+        totalWeight += enemy->getWeight();
+        currentEnemies.push_back(enemy);
+        gameMap.addItem(enemy->getGraphics());
+        // Wait for 1 second before spawning the next enemy
+        QThread::sleep(1);
+    }
 }

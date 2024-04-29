@@ -18,3 +18,27 @@ Mob::Mob(int health, int shield, int damage, float regenerationRate, int speed, 
 int Mob::getHealth() {
     return health;
 }
+
+int Mob::getShield() {
+    return shield;
+}
+
+int Mob::getDamage() {
+    return damage;
+}
+
+float Mob::getRegenerationRate() {
+    return regenerationRate;
+}
+
+int Mob::getSpeed() {
+    return speed;
+}
+
+int Mob::getX() {
+    return x;
+}
+
+int Mob::getY() {
+    return y;
+}

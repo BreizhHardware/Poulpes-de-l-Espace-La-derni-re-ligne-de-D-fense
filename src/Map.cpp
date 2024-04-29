@@ -115,3 +115,10 @@ int Map::getWidth() {
 int Map::getHeight() {
     return height;
 }
+
+Tile* Map::getTile(int x, int y) {
+    if (x >= 0 && x < width && y >= 0 && y < height){
+        return tiles[y][x];
+    }
+    return nullptr;
+}
