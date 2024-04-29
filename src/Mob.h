@@ -19,7 +19,7 @@ protected:
 
 public:
     Mob(int health, int shield, int damage, float regenerationRate, int speed, std::string avatarPath, int x, int y);
-
+    int getHealth();
 };
 
 

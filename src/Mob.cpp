@@ -14,3 +14,7 @@ Mob::Mob(int health, int shield, int damage, float regenerationRate, int speed, 
     this->x = x;
     this->y = y;
 }
+
+int Mob::getHealth() {
+    return health;
+}

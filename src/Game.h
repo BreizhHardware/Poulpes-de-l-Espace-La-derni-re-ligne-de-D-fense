@@ -17,12 +17,16 @@ public:
     Game();
     void start();
     Map gameMap;
+    void updateDisplay();
 
 private:
     int userGold;
     QTimer gameTimer;
     int waveNumber;
     Player* player;
+    QGraphicsTextItem* healthDisplay;
+    QGraphicsTextItem* goldDisplay;
+    QGraphicsTextItem* waveDisplay;
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
