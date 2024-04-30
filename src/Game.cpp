@@ -8,7 +8,8 @@
 #include <iostream>
 #include <QDebug>
 
-Game::Game(){
+Game::Game(Menu* menu) : menu(menu)
+{
     // Set the user gold and wave number to 0
     userGold = 0;
     waveNumber = 0;
@@ -180,13 +181,14 @@ void Game::gameOver() {
     totalWeight = 0;
     targetWeight = 0;
 
-    // Show the menu
-    menu->showMenuGO();
-
-    // Delete the game object
-    deleteLater();
+    auto* gameOver = new Gameover(this);
+    connect(gameOver, &Gameover::restartGameSignal, this, &Game::start);
+    gameOver->setFixedSize(200, 100);
+    gameOver->show();
 }
 
-Game::~Game() {
-    qDebug() << "Game object deleted";
+void Game::resetGame() {
+    // Recreate the player
+    player = new Player(1, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap, *this);
+    gameMap.addItem(player->getGraphics());
 }

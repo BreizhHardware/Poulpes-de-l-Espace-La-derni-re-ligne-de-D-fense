@@ -4,32 +4,33 @@
 
 #include "Gameover.h"
 
-Gameover::Gameover(QWidget *parent) : QGraphicsScene(parent) {
-    gameOverLabel = new QGraphicsTextItem("Game Over");
-    gameOverLabel->setPos(640, 360);
-    gameOverLabel->setDefaultTextColor(Qt::red);
-    addItem(gameOverLabel);
+Gameover::Gameover(Game* game, QWidget *parent) : QWidget(parent), game(game) {
+    restartButton = new QPushButton("Restart", this);
+    quitButton = new QPushButton("Quit", this);
 
-    auto* layout = new QVBoxLayout();
-    auto* restartButton = new QPushButton("Restart", parent);
-    connect(restartButton, &QPushButton::clicked, this, &Gameover::restartGame);
-    layout->addWidget(restartButton);
+    restartButton->setFixedSize(100, 50);
+    quitButton->setFixedSize(100, 50);
 
-    auto* returnButton = new QPushButton("Return to menu", parent);
-    connect(returnButton, &QPushButton::clicked, this, &Gameover::returnToMenu);
-    layout->addWidget(returnButton);
+    connect(restartButton, &QPushButton::clicked, this, &Gameover::onRestartButtonClicked);
+    connect(quitButton, &QPushButton::clicked, this, &Gameover::onQuitButtonClicked);
 
-    auto* widget = new QWidget();
-    widget->setLayout(layout);
+    auto *buttonLayout = new QVBoxLayout();
+    buttonLayout->addWidget(restartButton);
+    buttonLayout->addWidget(quitButton);
 
-    auto* proxy = addWidget(widget);
-    proxy->setPos(640, 400);
+    auto* mainLayout = new QGridLayout(this);
+    mainLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding), 0, 0);
+    mainLayout->addLayout(buttonLayout, 1, 1);
+    mainLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding), 2, 2);
+    setLayout(mainLayout);
 }
 
-void Gameover::restartGame() {
+void Gameover::onRestartButtonClicked() {
+    game->resetGame();
     emit restartGameSignal();
+    this->close();
 }
 
-void Gameover::returnToMenu() {
-    emit returnToMenuSignal();
+void Gameover::onQuitButtonClicked() {
+    QApplication::quit();
 }

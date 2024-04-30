@@ -4,29 +4,32 @@
 
 #ifndef POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_GAMEOVER_H
 #define POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_GAMEOVER_H
-#include <QGraphicsScene>
-#include <QGraphicsTextItem>
+#include <QWidget>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <QGraphicsProxyWidget>
+#include <QApplication>
+#include <QGridLayout>
+#include <QSpacerItem>
+#include "Game.h"
 
-class Gameover : public QGraphicsScene
-{
+class Game;
+
+class Gameover : public QWidget {
     Q_OBJECT
 public:
-    Gameover(QWidget* parent = nullptr);
-
-private:
-    QGraphicsTextItem* gameOverLabel;
+    explicit Gameover(Game* game, QWidget *parent = nullptr);
 
 private slots:
-    void restartGame();
-    void returnToMenu();
+    void onRestartButtonClicked();
+    static void onQuitButtonClicked();
+
+private:
+    Game* game;
+    QPushButton* restartButton;
+    QPushButton* quitButton;
 
 signals:
     void restartGameSignal();
-    void returnToMenuSignal();
-
 };
 
 

@@ -42,7 +42,7 @@ void Menu::onPlayButtonClicked() {
     view->setFixedSize(1280, 720);
     view->show();
     // Create a new game
-    game = new Game();
+    game = new Game(this);
     game->start();
 
     // Show the game
@@ -86,16 +86,30 @@ void Menu::showMenu() {
         view->hide();
     }
     this->setVisible(true);
-    this->raise();
+    if(this != nullptr) {
+        qDebug() << this;
+        this->raise();
+    }
     playButton->show();
     rulesButton->show();
     leaderboardButton->show();
     quitButton->show();
 }
 
-void Menu::showMenuGO() {
-    this->setVisible(true);
-    this->raise();
+void Menu::showMenuAfterGame() {
+    // Hide the game view
+    if(view){
+        view->hide();
+    }
+    /*
+
+    // Make the menu visible
+    if(this != nullptr) {
+        this->setVisible(true);
+    }
+    */
+
+    // Show the menu buttons
     playButton->show();
     rulesButton->show();
     leaderboardButton->show();

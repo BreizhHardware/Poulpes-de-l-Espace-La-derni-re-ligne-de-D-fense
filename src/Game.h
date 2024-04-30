@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Menu.h"
+#include "Gameover.h"
 
 class Player;
 
@@ -24,7 +25,7 @@ class Game : public QGraphicsView
 {
     Q_OBJECT
 public:
-    Game();
+    Game(Menu* menu);
     void start();
     Map gameMap;
     void updateDisplay();
@@ -35,7 +36,7 @@ public:
     void removeEnemy(Enemy* enemy);
     Player* player;
     void gameOver();
-    ~Game() override;
+    void resetGame();
 
 private:
     QTimer gameTimer;

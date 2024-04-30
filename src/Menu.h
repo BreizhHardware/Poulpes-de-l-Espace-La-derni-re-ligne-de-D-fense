@@ -23,7 +23,7 @@ class Menu : public QWidget {
     Q_OBJECT
 public:
     Menu(QWidget *parent = nullptr);
-    void showMenuGO();
+    void showMenuAfterGame();
 
 public slots:
     void showMenu();
