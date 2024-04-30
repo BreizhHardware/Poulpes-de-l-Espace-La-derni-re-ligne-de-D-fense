@@ -6,7 +6,7 @@
 #define TOWER_H
 #include <QObject>
 #include <QPointF>
-#include <vector>
+#include <QVector>
 #include <QGraphicsPixmapItem>
 #include <QTimer>
 #include "Enemy.h"
@@ -28,7 +28,6 @@ protected:
     QPointF position;
     std::string avatarPath;
     QGraphicsPixmapItem* graphics{};
-    Game& game;
     QTimer* fireTimer;
 
 public:
@@ -37,7 +36,8 @@ public:
     virtual ~Tower() = default;
     QGraphicsPixmapItem* getGraphics();
     void fireAtClosest(Enemy* target = nullptr) const;
-    Enemy* getClosestEnemyInRange(const std::vector<Enemy*>& enemies);
+    Enemy* getClosestEnemyInRange(const QVector<Enemy*>& enemies);
+    Game& game;
 
 public slots:
     void fire();
@@ -45,19 +45,19 @@ public slots:
 
 class LaserTower : public Tower {
 public:
-    explicit LaserTower(QPointF position);
+    explicit LaserTower(QPointF position, Game& game);
     void upgrade() override;
 };
 
 class BalisticTower : public Tower {
 public:
-    explicit BalisticTower(QPointF position);
+    explicit BalisticTower(QPointF position, Game& game);
     void upgrade() override;
 };
 
 class DistorionTower : public Tower {
 public:
-    explicit DistorionTower(QPointF position);
+    explicit DistorionTower(QPointF position, Game& game);
     void upgrade() override;
 };
 

@@ -92,3 +92,14 @@ void Player::takeDamage(int damage) {
     }
 }
 
+void Player::updatePreviousHealth() {
+    previousHealth = health;
+}
+
+int Player::getPreviousHealth() const {
+    return previousHealth;
+}
+
+void Player::heal(int amount) {
+    health += amount;
+}

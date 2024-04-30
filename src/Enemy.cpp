@@ -106,6 +106,12 @@ void Enemy::takeDamage(int damage) {
     }
     healthText->setPlainText(QString::number(health));
     if (health <= 0) {
+        dropGold();
         game.removeEnemy(this);
     }
+}
+
+void Enemy::dropGold() {
+    game.userGold += coinDrop;
+    game.updateDisplay();
 }

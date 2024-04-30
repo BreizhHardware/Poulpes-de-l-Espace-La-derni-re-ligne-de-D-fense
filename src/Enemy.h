@@ -25,6 +25,7 @@ public:
     Tile* getNextPathTile();
     Tile* getCurrentTile();
     void takeDamage(int damage);
+    void dropGold();
 
 private slots:
     void onMoveTimerTimeout();

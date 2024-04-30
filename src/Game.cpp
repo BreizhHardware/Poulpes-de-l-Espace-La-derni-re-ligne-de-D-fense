@@ -48,9 +48,15 @@ Game::Game(Menu* menu) : menu(menu)
 
     // Set the scene of the QGraphicsView to the gameMap
     this->setScene(&gameMap);
+
+    player->updatePreviousHealth();
 }
 
 void Game::start() {
+    // Heal the player to full health (100)
+    int preiousHealth = player->getHealth();
+    player->heal(100 - preiousHealth);
+
     // Create the map
     gameMap.generateMap(25, 14);
 
@@ -176,11 +182,45 @@ void Game::gameOver() {
     }
     delete player;
 
+    // Open a connection to the database
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("leaderboard.db");
+    if(!db.open()) {
+        qDebug() << "Error: connection with database failed";
+    }
+
+    // Check if the leaderboard table exists in the database
+    QSqlQuery query;
+    query.prepare("CREATE TABLE IF NOT EXISTS leaderboard (username TEXT, wave INTEGER)");
+    if(!query.exec()) {
+        qDebug() << "Error: table creation failed";
+    }
+
+    // Get the user's name
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    QString username = env.value("USER", "Unknown");
+
+    // Create a new SQL query to insert the user's score into the database
+    QSqlQuery queryInsert;
+    queryInsert.prepare("INSERT INTO leaderboard (username, wave) VALUES (:username, :wave)");
+    queryInsert.bindValue(":username", username);
+    queryInsert.bindValue(":wave", waveNumber);
+
+    // Execute the query
+    if(!queryInsert.exec()) {
+        qDebug() << "Error: query failed";
+    }
+
+    // Close the database connection
+    db.close();
+
     // Reset game variables
     userGold = 0;
     waveNumber = 0;
     totalWeight = 0;
     targetWeight = 0;
+
+    clearTowers();
 
     auto* gameOver = new Gameover(this);
     connect(gameOver, &Gameover::restartGameSignal, this, &Game::start);
@@ -223,23 +263,42 @@ void Game::placeTower(QMouseEvent* event) {
         userGold -= 50;
         Tile* tile = gameMap.getTile(gridX, gridY);
         tile->setType(Tile::Tower);
-        auto* tower = new LaserTower(QPointF(gridX, gridY));
+        auto* tower = new LaserTower(QPointF(gridX, gridY), *this);
+        towers.push_back(tower);
         gameMap.addItem(tower->getGraphics());
     } else if (selectedAction == balisticTower && userGold >= 100) {
         userGold -= 100;
         Tile* tile = gameMap.getTile(gridX, gridY);
         tile->setType(Tile::Tower);
-        auto* tower = new BalisticTower(QPointF(gridX, gridY));
+        auto* tower = new BalisticTower(QPointF(gridX, gridY), *this);
+        towers.push_back(tower);
         gameMap.addItem(tower->getGraphics());
     } else if (selectedAction == distorsionTower && userGold >= 75) {
         userGold -= 75;
         Tile* tile = gameMap.getTile(gridX, gridY);
         tile->setType(Tile::Tower);
-        auto* tower = new DistorionTower(QPointF(gridX, gridY));
+        auto* tower = new DistorionTower(QPointF(gridX, gridY), *this);
+        towers.push_back(tower);
         gameMap.addItem(tower->getGraphics());
     }
 }
 
 void Game::mousePressEvent(QMouseEvent* event) {
     placeTower(event);
+}
+
+void Game::endRound() {
+    if(player->getHealth() == player->getPreviousHealth()) {
+        player->heal(5);
+    }
+    player->updatePreviousHealth();
+}
+
+void Game::clearTowers() {
+    for (auto* tower : towers) {
+        if (tower->getGraphics()->scene() == &gameMap) {
+            gameMap.removeItem(tower->getGraphics());
+        }
+        delete tower;
+    }
 }

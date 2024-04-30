@@ -7,6 +7,8 @@
 #include <string>
 #include <QObject>
 
+class Map;
+
 class Mob : public QObject
 {
     Q_OBJECT
@@ -22,13 +24,13 @@ protected:
 
 public:
     Mob(int health, int shield, int damage, int regenerationRate, int speed, std::string avatarPath, int x, int y);
-    int getHealth();
-    int getShield();
-    int getDamage();
-    float getRegenerationRate();
-    int getSpeed();
-    int getX();
-    int getY();
+    [[nodiscard]] int getHealth() const;
+    [[nodiscard]] int getShield() const;
+    [[nodiscard]] int getDamage() const;
+    [[nodiscard]] int getRegenerationRate() const;
+    [[nodiscard]] int getSpeed() const;
+    [[nodiscard]] int getX() const;
+    [[nodiscard]] int getY() const;
 };
 
 

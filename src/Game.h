@@ -9,6 +9,9 @@
 #include <QGraphicsView>
 #include <QKeyEvent>
 #include <QThread>
+#include <QVector>
+#include <QSqlQuery>
+#include <QProcessEnvironment>
 #include "Map.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -22,6 +25,8 @@ class Enemy;
 
 class Menu;
 
+class Tower;
+
 class Game : public QGraphicsView
 {
     Q_OBJECT
@@ -32,13 +37,15 @@ public:
     void updateDisplay() const;
     void spawnEnemies(int waveNumber);
     int userGold;
-    std::vector<Enemy*> currentEnemies;
+    QVector<Enemy*> currentEnemies;
     void checkEnemyNumber();
     void removeEnemy(Enemy* enemy);
     Player* player;
     void gameOver();
     void resetGame();
     void placeTower(QMouseEvent* event);
+    void endRound();
+    void clearTowers();
 
 private:
     QTimer gameTimer;
@@ -52,6 +59,7 @@ private:
     int x;
     int y;
     Menu* menu;
+    QVector<Tower*> towers;
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;

@@ -19,7 +19,6 @@ class Enemy;
 
 class Player : public Mob
 {
-    Game& game;
 public:
     Player(int health, int shield, int damage, int regenerationRate, int speed, const std::string& avatarPath, int x, int y, Map& gameMap, Game& game);
     void setPosition(Tile* tile);
@@ -28,10 +27,15 @@ public:
     QGraphicsPixmapItem* getGraphics() const;
     void touchEnemy(Enemy* enemy);
     void takeDamage(int damage);
+    Game& game;
+    void updatePreviousHealth();
+    int getPreviousHealth() const;
+    void heal(int amount);
 
 private:
     QGraphicsPixmapItem* graphics;
     Map& gameMap;
+    int previousHealth;
 };
 
 
