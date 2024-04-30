@@ -256,7 +256,7 @@ void Game::placeTower(QMouseEvent* event) {
     QAction* distorsionTower = towerMenu.addAction("Distorsion Tower - 75 gold");
 
     // Display the menu and wait for the user to select an action
-    QAction* selectedAction = towerMenu.exec(event->globalPos());
+    QAction* selectedAction = towerMenu.exec(event->globalPosition().toPoint());
 
     // Create the selected tower and add it to the list of towers
     if (selectedAction == laserTower && userGold >= 50) {
