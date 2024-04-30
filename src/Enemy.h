@@ -16,7 +16,7 @@ class Enemy : public Mob
 {
     Q_OBJECT
 public:
-    Enemy(int health, int shield, int damage, float regenerationRate, int speed, std::string avatarPath,
+    Enemy(int health, int shield, int damage, int regenerationRate, int speed, std::string avatarPath,
           int x, int y, int coinDrop, int weight, Map& gameMap, int id, Game& game);
     int getWeight();
     int getCoinDrop();
@@ -24,6 +24,7 @@ public:
     void moveEnemy();
     Tile* getNextPathTile();
     Tile* getCurrentTile();
+    void takeDamage(int damage);
 
 private slots:
     void onMoveTimerTimeout();
@@ -37,6 +38,13 @@ private:
     Tile* nextStep;
     int id;
     Game& game;
+    QGraphicsTextItem* healthText;
+    QGraphicsTextItem* shieldText;
+    QTimer* shieldRegenTimer;
+    int initialShield;
+
+public slots:
+    void regenerateShield();
 };
 
 

@@ -14,6 +14,7 @@
 #include "Enemy.h"
 #include "Menu.h"
 #include "Gameover.h"
+#include "Tower.h"
 
 class Player;
 
@@ -28,7 +29,7 @@ public:
     Game(Menu* menu);
     void start();
     Map gameMap;
-    void updateDisplay();
+    void updateDisplay() const;
     void spawnEnemies(int waveNumber);
     int userGold;
     std::vector<Enemy*> currentEnemies;
@@ -37,6 +38,7 @@ public:
     Player* player;
     void gameOver();
     void resetGame();
+    void placeTower(QMouseEvent* event);
 
 private:
     QTimer gameTimer;
@@ -53,6 +55,7 @@ private:
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
 };
 
 

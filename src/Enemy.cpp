@@ -5,9 +5,10 @@
 #include "Enemy.h"
 #include <QDebug>
 
-Enemy::Enemy(int health, int shield, int damage, float regenerationRate, int speed, std::string avatarPath,
+Enemy::Enemy(int health, int shield, int damage, int regenerationRate, int speed, std::string avatarPath,
              int x, int y, int coinDrop, int weight, Map& gameMap, int id, Game& game)
-        : Mob(health, shield, damage, regenerationRate, speed, avatarPath, x, y), gameMap(gameMap), game(game) {
+        : Mob(health, shield, damage, regenerationRate, speed, avatarPath, x, y),
+            gameMap(gameMap), game(game), initialShield(shield) {
     this->coinDrop = coinDrop;
     this->weight = weight;
     this->id = id;
@@ -23,6 +24,18 @@ Enemy::Enemy(int health, int shield, int damage, float regenerationRate, int spe
     }
     connect(moveTimer, SIGNAL(timeout()), this, SLOT(onMoveTimerTimeout()));
     moveTimer->start(1000 / speed);
+
+    healthText = new QGraphicsTextItem(QString::number(health), graphics);
+    healthText->setDefaultTextColor(Qt::red);
+    healthText->setPos(graphics->boundingRect().width()/2 - healthText->boundingRect().width()/2, -healthText->boundingRect().height());
+
+    shieldText = new QGraphicsTextItem(QString::number(shield), graphics);
+    shieldText->setDefaultTextColor(Qt::blue);
+    shieldText->setPos(graphics->boundingRect().width()/2 - shieldText->boundingRect().width()/2, -shieldText->boundingRect().height() - healthText->boundingRect().height());
+
+    shieldRegenTimer = new QTimer();
+    connect(shieldRegenTimer, &QTimer::timeout, this, &Enemy::regenerateShield);
+    shieldRegenTimer->start(1000);
 }
 
 int Enemy::getWeight() {
@@ -68,4 +81,31 @@ void Enemy::moveEnemy() {
 
 void Enemy::onMoveTimerTimeout() {
     moveEnemy();
+}
+
+void Enemy::regenerateShield() {
+    if (shield < initialShield) {
+        shield += regenerationRate;
+        if (shield > initialShield) {
+            shield = initialShield;
+        }
+        shieldText->setPlainText(QString::number(shield));
+    }
+}
+
+void Enemy::takeDamage(int damage) {
+    if (shield > 0) {
+        shield -= damage;
+        if (shield < 0) {
+            health += shield;
+            shield = 0;
+        }
+        shieldText->setPlainText(QString::number(shield));
+    } else {
+        health -= damage;
+    }
+    healthText->setPlainText(QString::number(health));
+    if (health <= 0) {
+        game.removeEnemy(this);
+    }
 }

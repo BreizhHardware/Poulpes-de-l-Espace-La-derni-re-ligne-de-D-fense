@@ -5,7 +5,7 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(int health, int shield, int damage, float regenerationRate, int speed, const std::string& avatarPath, int x, int y, Map& gameMap, Game& game)
+Player::Player(int health, int shield, int damage, int regenerationRate, int speed, const std::string& avatarPath, int x, int y, Map& gameMap, Game& game)
         : Mob(health, shield, damage, regenerationRate, speed, avatarPath, x, y), gameMap(gameMap), game(game) {
     this->x = x;
     this->y = y;
@@ -28,6 +28,9 @@ void Player::setPosition(Tile* tile) {
         if (enemy->getX() == x && enemy->getY() == y) {
             // If there is an enemy, call the touchEnemy method
             touchEnemy(enemy);
+            if(health <= 0) {
+                return;
+            }
             break;
         }
     }
@@ -53,11 +56,11 @@ void Player::setPosition(int x, int y) {
     }
 }
 
-void Player::getPlayerPosition() {
+void Player::getPlayerPosition() const{
     std::cout << "Player position: x: " << x << " y: " << y << std::endl;
 }
 
-QGraphicsPixmapItem* Player::getGraphics() {
+QGraphicsPixmapItem* Player::getGraphics() const{
     return graphics;
 }
 
@@ -85,6 +88,7 @@ void Player::takeDamage(int damage) {
     if (health <= 0) {
         // Game over
         game.gameOver();
+        health = 0;
     }
 }
 

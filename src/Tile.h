@@ -15,6 +15,7 @@ public:
     int gridX();
     int gridY();
     bool isPath();
+    void setType(Type type);
 
 private:
     Type type;

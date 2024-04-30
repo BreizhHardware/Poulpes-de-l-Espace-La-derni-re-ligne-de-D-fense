@@ -18,7 +18,7 @@ Game::Game(Menu* menu) : menu(menu)
     this->setFocusPolicy(Qt::StrongFocus);
 
     // Create the player object
-    player = new Player(1, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap, *this);
+    player = new Player(100, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap, *this);
 
     // Create the text items for the health, gold and wave number
     healthDisplay = new QGraphicsTextItem();
@@ -110,7 +110,7 @@ void Game::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-void Game::updateDisplay() {
+void Game::updateDisplay() const{
     healthDisplay->setPlainText("Health: " + QString::number(player->getHealth()));
     goldDisplay->setPlainText("Gold: " + QString::number(userGold));
     waveDisplay->setPlainText("Wave: " + QString::number(waveNumber));
@@ -118,10 +118,10 @@ void Game::updateDisplay() {
 
 void Game::spawnEnemies(int waveNumber) {
     totalWeight = 0;
-    targetWeight = waveNumber * waveNumber;
+    targetWeight = waveNumber * 2;
     int enemyId = 0;
 
-    QTimer* spawnTimer = new QTimer();
+    auto* spawnTimer = new QTimer();
     connect(spawnTimer, &QTimer::timeout, [this, waveNumber, &enemyId, spawnTimer](){
         if(totalWeight < targetWeight){
             // Create a new enemy on the start tile
@@ -152,8 +152,8 @@ void Game::removeEnemy(Enemy* enemy) {
     auto it = std::find(currentEnemies.begin(), currentEnemies.end(), enemy);
     if (it != currentEnemies.end()) {
         currentEnemies.erase(it);
+        delete enemy;
     }
-    delete enemy;
 }
 
 void Game::gameOver() {
@@ -161,13 +161,14 @@ void Game::gameOver() {
     enemyCheckTimer.stop();
 
     // Remove all the enemies from the game
-    for (auto* enemy : currentEnemies) {
+    while (!currentEnemies.empty()) {
+        Enemy* enemy = currentEnemies.back();
         if (enemy->getGraphics()->scene() == &gameMap) {
             gameMap.removeItem(enemy->getGraphics());
         }
-        delete enemy;
+        currentEnemies.pop_back();
+        delete enemy; // Delete the enemy after it has been removed from currentEnemies
     }
-    currentEnemies.clear();
 
     // Remove the player from the game
     if (player->getGraphics()->scene() == &gameMap) {
@@ -189,6 +190,56 @@ void Game::gameOver() {
 
 void Game::resetGame() {
     // Recreate the player
-    player = new Player(1, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap, *this);
+    player = new Player(100, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap, *this);
     gameMap.addItem(player->getGraphics());
+}
+
+void Game::placeTower(QMouseEvent* event) {
+    // Check if the click is a left click
+    if (event->button() != Qt::LeftButton) {
+        return;
+    }
+
+    // Convert the mouse position to scene coordinates
+    int gridX = event->pos().x() / 50;
+    int gridY = event->pos().y() / 50;
+
+    // Check if the Tile is a other tile
+    if (gameMap.getTile(gridX, gridY)->getType() != Tile::Other) {
+        return;
+    }
+
+    // Create a menu to select the tower type
+    QMenu towerMenu;
+    QAction* laserTower = towerMenu.addAction("Laser Tower - 50 gold");
+    QAction* balisticTower = towerMenu.addAction("Balistic Tower - 100 gold");
+    QAction* distorsionTower = towerMenu.addAction("Distorsion Tower - 75 gold");
+
+    // Display the menu and wait for the user to select an action
+    QAction* selectedAction = towerMenu.exec(event->globalPos());
+
+    // Create the selected tower and add it to the list of towers
+    if (selectedAction == laserTower && userGold >= 50) {
+        userGold -= 50;
+        Tile* tile = gameMap.getTile(gridX, gridY);
+        tile->setType(Tile::Tower);
+        auto* tower = new LaserTower(QPointF(gridX, gridY));
+        gameMap.addItem(tower->getGraphics());
+    } else if (selectedAction == balisticTower && userGold >= 100) {
+        userGold -= 100;
+        Tile* tile = gameMap.getTile(gridX, gridY);
+        tile->setType(Tile::Tower);
+        auto* tower = new BalisticTower(QPointF(gridX, gridY));
+        gameMap.addItem(tower->getGraphics());
+    } else if (selectedAction == distorsionTower && userGold >= 75) {
+        userGold -= 75;
+        Tile* tile = gameMap.getTile(gridX, gridY);
+        tile->setType(Tile::Tower);
+        auto* tower = new DistorionTower(QPointF(gridX, gridY));
+        gameMap.addItem(tower->getGraphics());
+    }
+}
+
+void Game::mousePressEvent(QMouseEvent* event) {
+    placeTower(event);
 }

@@ -21,11 +21,11 @@ class Player : public Mob
 {
     Game& game;
 public:
-    Player(int health, int shield, int damage, float regenerationRate, int speed, const std::string& avatarPath, int x, int y, Map& gameMap, Game& game);
+    Player(int health, int shield, int damage, int regenerationRate, int speed, const std::string& avatarPath, int x, int y, Map& gameMap, Game& game);
     void setPosition(Tile* tile);
     void setPosition(int x, int y);
-    void getPlayerPosition();
-    QGraphicsPixmapItem* getGraphics();
+    void getPlayerPosition() const;
+    QGraphicsPixmapItem* getGraphics() const;
     void touchEnemy(Enemy* enemy);
     void takeDamage(int damage);
 

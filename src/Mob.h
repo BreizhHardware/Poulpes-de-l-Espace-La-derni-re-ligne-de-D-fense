@@ -14,14 +14,14 @@ protected:
     int health;
     int shield;
     int damage;
-    float regenerationRate;
+    int regenerationRate;
     int speed;
     std::string avatarPath;
     int x;
     int y;
 
 public:
-    Mob(int health, int shield, int damage, float regenerationRate, int speed, std::string avatarPath, int x, int y);
+    Mob(int health, int shield, int damage, int regenerationRate, int speed, std::string avatarPath, int x, int y);
     int getHealth();
     int getShield();
     int getDamage();

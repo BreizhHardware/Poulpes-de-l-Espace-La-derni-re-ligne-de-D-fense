@@ -4,7 +4,7 @@
 
 #include "Mob.h"
 
-Mob::Mob(int health, int shield, int damage, float regenerationRate, int speed, std::string avatarPath, int x, int y){
+Mob::Mob(int health, int shield, int damage, int regenerationRate, int speed, std::string avatarPath, int x, int y){
     this->health = health;
     this->shield = shield;
     this->damage = damage;

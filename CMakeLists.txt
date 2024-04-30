@@ -31,6 +31,8 @@ add_executable(Poulpes_de_l_espace_La_derniere_ligne_de_defense ${sourceCode}
         src/Player.cpp
         src/Player.h
         src/Gameover.cpp
-        src/Gameover.h)
+        src/Gameover.h
+        src/Tower.cpp
+        src/Tower.h)
 
 target_link_libraries(Poulpes_de_l_espace_La_derniere_ligne_de_defense PRIVATE Qt6::Widgets Qt6::Sql)
