@@ -5,7 +5,7 @@
 ### Introduction
 
 En l'ans 2954 du calendrier humain, les pouples de l'espace ont été découverts. 
-Ces créatures, mi-poulpes, mi-humaines, ont été trouvées sur une planète lointaine, dans un système solaire inconnu. 
+Ces créatures, mi-poulpes, mi-pingouin, ont été trouvées sur une planète lointaine, dans un système solaire inconnu. 
 Les pouples de l'espace sont des créatures pacifiques, mais elles sont aussi très intelligentes. 
 Elles ont développé une technologie avancée et ont réussi à voyager à travers l'espace pour visiter d'autres planètes.
 
