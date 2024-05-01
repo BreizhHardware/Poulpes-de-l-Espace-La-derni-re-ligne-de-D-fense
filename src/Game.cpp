@@ -130,6 +130,12 @@ void Game::spawnEnemies(int waveNumber) {
     if(waveNumber == 1) {
         targetWeight = 1;
     }
+    if(waveNumber == 2) {
+        targetWeight = 3;
+    }
+    if(waveNumber == 3) {
+        targetWeight = 5;
+    }
     int enemyId = 0;
 
     // Get the start tile

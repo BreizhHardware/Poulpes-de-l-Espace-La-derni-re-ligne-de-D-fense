@@ -54,7 +54,7 @@ void Tower::fire() {
     fireAtClosest(target);
 }
 
-LaserTower::LaserTower(QPointF position, Game& game) : Tower(10, 1, 10, 1, 50, position,
+LaserTower::LaserTower(QPointF position, Game& game) : Tower(50, 1, 10, 1, 50, position,
                                 "../ressources/Laser_Tower.png", game) {
     QPixmap pixmap(QString::fromStdString(avatarPath));
     // Check if the pixmap is null
@@ -81,7 +81,7 @@ void LaserTower::upgrade() {
     cost += 50;
 }
 
-BalisticTower::BalisticTower(QPointF position, Game& game) : Tower(30, 2, 6, 1, 100, position,
+BalisticTower::BalisticTower(QPointF position, Game& game) : Tower(150, 2, 6, 1, 100, position,
                                     "../ressources/Balistic_Tower.png", game) {
     QPixmap pixmap(QString::fromStdString(avatarPath));
     // Check if the pixmap is null
@@ -104,7 +104,7 @@ void BalisticTower::upgrade() {
     cost += 100;
 }
 
-DistorionTower::DistorionTower(QPointF position, Game& game) : Tower(20, 1, 7, 1, 75, position,
+DistorionTower::DistorionTower(QPointF position, Game& game) : Tower(100, 1, 7, 1, 75, position,
                                         "../ressources/Distortion_Tower.png", game) {
     QPixmap pixmap(QString::fromStdString(avatarPath));
     // Check if the pixmap is null
