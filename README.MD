@@ -32,7 +32,7 @@ Les règles sont simples:
 - Utilisez les touches fléchées pour déplacer votre vaisseau.
 - Faites un clic gauche pour placer une tour de défense.
 
-# Comment jouer
+## Comment jouer
 
 ### Installation
 
