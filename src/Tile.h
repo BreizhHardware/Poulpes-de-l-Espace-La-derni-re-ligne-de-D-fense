@@ -5,6 +5,9 @@
 #ifndef POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_TILE_H
 #define POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_TILE_H
 #include <QGraphicsRectItem>
+#include <QBrush>
+#include <QGraphicsPixmapItem>
+#include <QPixmap>
 
 class Tile : public QGraphicsRectItem
 {
@@ -16,9 +19,11 @@ public:
     int gridY();
     bool isPath();
     void setType(Type type);
+    QGraphicsPixmapItem* getGraphics() const;
 
 private:
     Type type;
+    QGraphicsPixmapItem* graphics;
 };
 
 

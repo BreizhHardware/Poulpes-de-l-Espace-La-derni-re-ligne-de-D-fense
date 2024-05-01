@@ -3,26 +3,9 @@
 //
 
 #include "Tile.h"
-#include <QBrush>
 
 Tile::Tile(Tile::Type type, QGraphicsItem *parent) : QGraphicsRectItem(parent), type(type) {
-    switch (type) {
-        case Road:
-            setBrush(QBrush(Qt::gray));
-            break;
-        case Start:
-            setBrush(QBrush(Qt::green));
-            break;
-        case End:
-            setBrush(QBrush(Qt::red));
-            break;
-        case Tower:
-            setBrush(QBrush(Qt::blue));
-            break;
-        case Other:
-            setBrush(QBrush(Qt::yellow));
-            break;
-    }
+    setType(type);
 }
 
 Tile::Type Tile::getType() const {
@@ -43,21 +26,35 @@ bool Tile::isPath() {
 
 void Tile::setType(Tile::Type type) {
     this->type = type;
+    QPixmap pixmap;
     switch (type) {
         case Road:
-            setBrush(QBrush(Qt::gray));
+            pixmap = QPixmap(QString::fromStdString("../ressources/road.png"));
             break;
         case Start:
-            setBrush(QBrush(Qt::green));
+            pixmap = QPixmap(QString::fromStdString("../ressources/start.png"));
             break;
         case End:
-            setBrush(QBrush(Qt::red));
+            pixmap = QPixmap(QString::fromStdString("../ressources/end.png"));
             break;
         case Tower:
-            setBrush(QBrush(Qt::blue));
+            pixmap = QPixmap(QString::fromStdString("../ressources/tower.png"));
             break;
         case Other:
-            setBrush(QBrush(Qt::yellow));
+            pixmap = QPixmap(QString::fromStdString("../ressources/other.png"));
             break;
     }
+    if (pixmap.isNull()) {
+        return;
+    } else {
+        graphics = new QGraphicsPixmapItem();
+        QPixmap scaledPixmap = pixmap.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation); // Scale the pixmap to 50x50 pixels
+        graphics->setPixmap(scaledPixmap);
+        graphics->setPos(x() * 50, y() * 50);
+        graphics->setZValue(1);
+    }
+}
+
+QGraphicsPixmapItem* Tile::getGraphics() const {
+    return graphics;
 }

@@ -21,8 +21,9 @@ void Map::generateMap(const int width, const int height) {
     // Create a new Start tile
     Tile* startTile = new Tile(Tile::Start);
     startTile->setRect(x * 50, y * 50, 50, 50);
+    startTile->getGraphics()->setPos(x * 50, y * 50);
     tiles[y][x] = startTile;
-    addItem(startTile);
+    addItem(startTile->getGraphics());
     length++;
 
     while (length < pathLength){
@@ -43,16 +44,18 @@ void Map::generateMap(const int width, const int height) {
         // Create a new Road tile
         Tile* tile = new Tile(Tile::Road);
         tile->setRect(x * 50, y * 50, 50, 50);
+        tile->getGraphics()->setPos(x * 50, y * 50);
         tiles[y][x] = tile;
-        addItem(tile);
+        addItem(tile->getGraphics());
         length++;
     }
 
     // Create a new End tile
     Tile* endTile = new Tile(Tile::End);
     endTile->setRect(x * 50, y * 50, 50, 50);
+    endTile->getGraphics()->setPos(x * 50, y * 50);
     tiles[y][x] = endTile;
-    addItem(endTile);
+    addItem(endTile->getGraphics());
 
     // Fill the rest of the map with Other tiles
     for (int i = 0; i < height; i++){
@@ -60,30 +63,15 @@ void Map::generateMap(const int width, const int height) {
             if (tiles[i][j] == nullptr){
                 Tile* tile = new Tile(Tile::Other);
                 tile->setRect(j * 50, i * 50, 50, 50);
+                tile->getGraphics()->setPos(j * 50, i * 50);
                 tiles[i][j] = tile;
-                addItem(tile);
+                addItem(tile->getGraphics());
             }
         }
     }
 
     this->width = width;
     this->height = height;
-}
-
-
-void Map::show() {
-    // Display the map in the main window
-    setSceneRect(0, 0, 1280, 720);
-    setBackgroundBrush(QBrush(Qt::black));
-
-    // Show the tiles
-    for (const auto& row : tiles){
-        for (Tile* tile : row){
-            if (tile != nullptr){
-                tile->show();
-            }
-        }
-    }
 }
 
 Tile* Map::getEndTile() {

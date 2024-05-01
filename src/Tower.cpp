@@ -67,7 +67,7 @@ LaserTower::LaserTower(QPointF position, Game& game) : Tower(10, 1, 10, 1, 50, p
         QPixmap scaledPixmap = pixmap.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation); // Scale the pixmap to 50x50 pixels
         graphics->setPixmap(scaledPixmap);
         graphics->setPos(x * 50, y * 50);
-        graphics->setZValue(1);
+        graphics->setZValue(2);
     }
 }
 
