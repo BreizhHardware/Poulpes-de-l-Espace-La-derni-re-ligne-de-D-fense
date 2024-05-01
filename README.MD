@@ -1,6 +1,6 @@
 # Pouples de l'espace: La dernière ligne de défense
 
-# Lore
+## Lore
 
 ### Introduction
 
