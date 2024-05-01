@@ -20,10 +20,10 @@ MainWindow::~MainWindow(){
 
 void MainWindow::slot_aboutMenu(){
     QMessageBox msgBox;
-    msgBox.setText("<strong>Poulpes de l'espace: La dernière ligne de défense<strong><br><br>"
+    msgBox.setText("<strong>Poulpes de l'espace: La dernière ligne de défense</strong><br><br>"
                    "Version 1.0<br><br>"
                    "A game by BreizhHardware and Amalizzy<br><br>"
-                   "2024 prout<br><br>"
+                   "2024<br><br>"
                    "This game is a tower defense game where you have to defend your base from the incoming waves of enemies.<br><br>"
                    "This game was made for the C++ course at the ISEN Nantes.<br><br>"
                    "The ships design is mainly inspired by the game Star Citizen.<br><br>"
