@@ -45,6 +45,8 @@ Les règles sont simples:
 
 git clone https://github.com/BreizhHardware/Poulpes-de-l-Espace-La-derniere-ligne-de-Defense.git
 
+cd Poulpes-de-l-Espace-La-derniere-ligne-de-Defense
+
 mkdir build
 
 cd build
