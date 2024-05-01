@@ -66,9 +66,9 @@ QGraphicsPixmapItem* Player::getGraphics() const{
 
 void Player::touchEnemy(Enemy* enemy) {
     // Subtract the enemy's damage from the player's health
-    takeDamage(enemy->getDamage());
-
-    if(health <= 0) {
+    try {
+        takeDamage(enemy->getDamage());
+    } catch (PlayerDeadException& e) {
         health = 0;
         return;
     }
@@ -90,7 +90,6 @@ void Player::takeDamage(int damage) {
         // Game over
         game.gameOver();
         health = 0;
-        game.updateDisplay();
         throw PlayerDeadException();
     }
 }
