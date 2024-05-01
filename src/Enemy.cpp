@@ -66,23 +66,27 @@ Tile* Enemy::getCurrentTile() {
 }
 
 void Enemy::moveEnemy() {
-    // Move the enemy to the next path tile
-    nextStep = getNextPathTile();
-    if (nextStep != nullptr) {
-        x = nextStep->gridX();
-        y = nextStep->gridY();
-        graphics->setPos(x * 50, y * 50);
-        // Check if the enemy is on the end tile and deal damage
-        if (getCurrentTile() == gameMap.getEndTile()) {
-            game.player->takeDamage(getDamage());
-            game.removeEnemy(this);
+    try {
+        // Move the enemy to the next path tile
+        nextStep = getNextPathTile();
+        if (nextStep != nullptr) {
+            x = nextStep->gridX();
+            y = nextStep->gridY();
+            graphics->setPos(x * 50, y * 50);
+            // Check if the enemy is on the end tile and deal damage
+            if (getCurrentTile() == gameMap.getEndTile()) {
+                game.player->takeDamage(getDamage());
+                game.removeEnemy(this);
+            }
+            // Check if the player is on the same tile as the enemy and deal damage
+            if (game.player->getX() == x && game.player->getY() == y) {
+                game.player->takeDamage(getDamage());
+                game.userGold += coinDrop;
+                game.removeEnemy(this);
+            }
         }
-        // Check if the player is on the same tile as the enemy and deal damage
-        if (game.player->getX() == x && game.player->getY() == y) {
-            game.player->takeDamage(getDamage());
-            game.userGold += coinDrop;
-            game.removeEnemy(this);
-        }
+    } catch (PlayerDeadException& e) {
+        return;
     }
 }
 

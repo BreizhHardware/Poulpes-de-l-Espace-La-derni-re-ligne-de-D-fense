@@ -9,6 +9,7 @@
 #include "Mob.h"
 #include "Map.h"
 #include "Game.h"
+#include "PlayerDeadException.h"
 
 class Game;
 

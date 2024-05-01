@@ -90,6 +90,8 @@ void Player::takeDamage(int damage) {
         // Game over
         game.gameOver();
         health = 0;
+        game.updateDisplay();
+        throw PlayerDeadException();
     }
 }
 

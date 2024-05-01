@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "Enemy.h"
 #include "Game.h"
+#include "PlayerDeadException.h"
 #include <QGraphicsEllipseItem>
 #include <QGraphicsPixmapItem>
 #include <QBrush>
