@@ -20,7 +20,7 @@ MainWindow::~MainWindow(){
 
 void MainWindow::slot_aboutMenu(){
     QMessageBox msgBox;
-    msgBox.setText("Poulpes de l'espace: La dernière ligne de défense<br><br>"
+    msgBox.setText("<strong>Poulpes de l'espace: La dernière ligne de défense<strong><br><br>"
                    "Version 1.0<br><br>"
                    "A game by BreizhHardware and Amalizzy<br><br>"
                    "2024<br><br>"

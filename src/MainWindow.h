@@ -22,7 +22,7 @@ public:
     virtual ~MainWindow();
 
 public slots:
-    void slot_aboutMenu();
+    static void slot_aboutMenu();
 };
 
 
