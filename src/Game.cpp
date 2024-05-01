@@ -118,6 +118,9 @@ void Game::keyPressEvent(QKeyEvent *event) {
 }
 
 void Game::updateDisplay() const{
+    if(this == nullptr || player == nullptr || healthDisplay == nullptr || goldDisplay == nullptr || waveDisplay == nullptr) {
+        return;
+    }
     healthDisplay->setPlainText("Health: " + QString::number(player->getHealth()));
     goldDisplay->setPlainText("Gold: " + QString::number(userGold));
     waveDisplay->setPlainText("Wave: " + QString::number(waveNumber));
