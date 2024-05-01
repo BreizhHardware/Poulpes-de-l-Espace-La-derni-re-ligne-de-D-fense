@@ -23,11 +23,9 @@ class Menu : public QWidget {
     Q_OBJECT
 public:
     Menu(QWidget *parent = nullptr);
-    void showMenuAfterGame();
 
 public slots:
     void showMenu();
-    void showGameOver();
 
 private slots:
     void onPlayButtonClicked();

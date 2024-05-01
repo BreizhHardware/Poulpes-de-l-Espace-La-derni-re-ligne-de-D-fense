@@ -18,8 +18,8 @@ class Enemy : public Mob
 public:
     Enemy(int health, int shield, int damage, int regenerationRate, int speed, std::string avatarPath,
           int x, int y, int coinDrop, int weight, Map& gameMap, int id, Game& game);
-    int getWeight();
-    int getCoinDrop();
+    int getWeight() const;
+    int getCoinDrop() const;
     QGraphicsPixmapItem* getGraphics();
     void moveEnemy();
     Tile* getNextPathTile();

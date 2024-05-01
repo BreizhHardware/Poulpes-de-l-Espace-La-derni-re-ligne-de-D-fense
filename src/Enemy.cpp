@@ -20,7 +20,7 @@ Enemy::Enemy(int health, int shield, int damage, int regenerationRate, int speed
         QPixmap scaledPixmap = pixmap.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation); // Scale the pixmap to 50x50 pixels
         graphics->setPixmap(scaledPixmap);
         graphics->setPos(x * 50, y * 50);
-        graphics->setZValue(1); // Set the Z-value to 1 to draw the enemy on top of the map tiles
+        graphics->setZValue(2); // Set the Z-value to 1 to draw the enemy on top of the map tiles
     }
     connect(moveTimer, SIGNAL(timeout()), this, SLOT(onMoveTimerTimeout()));
     moveTimer->start(1000 / speed);
@@ -38,11 +38,11 @@ Enemy::Enemy(int health, int shield, int damage, int regenerationRate, int speed
     shieldRegenTimer->start(1000);
 }
 
-int Enemy::getWeight() {
+int Enemy::getWeight() const {
     return weight;
 }
 
-int Enemy::getCoinDrop() {
+int Enemy::getCoinDrop() const {
     return coinDrop;
 }
 
@@ -72,8 +72,15 @@ void Enemy::moveEnemy() {
         x = nextStep->gridX();
         y = nextStep->gridY();
         graphics->setPos(x * 50, y * 50);
+        // Check if the enemy is on the end tile and deal damage
         if (getCurrentTile() == gameMap.getEndTile()) {
             game.player->takeDamage(getDamage());
+            game.removeEnemy(this);
+        }
+        // Check if the player is on the same tile as the enemy and deal damage
+        if (game.player->getX() == x && game.player->getY() == y) {
+            game.player->takeDamage(getDamage());
+            game.userGold += coinDrop;
             game.removeEnemy(this);
         }
     }

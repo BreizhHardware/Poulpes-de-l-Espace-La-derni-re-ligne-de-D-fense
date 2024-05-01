@@ -60,6 +60,7 @@ private:
     int y;
     Menu* menu;
     QVector<Tower*> towers;
+    bool isWaveSpawning;
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;

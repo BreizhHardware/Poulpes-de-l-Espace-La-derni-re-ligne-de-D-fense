@@ -13,6 +13,7 @@ Game::Game(Menu* menu) : menu(menu)
     // Set the user gold and wave number to 0
     userGold = 0;
     waveNumber = 0;
+    isWaveSpawning = false;
 
     // Set the FocusPolicy to StrongFocus to allow the QGraphicsView to receive key events
     this->setFocusPolicy(Qt::StrongFocus);
@@ -123,6 +124,7 @@ void Game::updateDisplay() const{
 }
 
 void Game::spawnEnemies(int waveNumber) {
+    isWaveSpawning = true;
     totalWeight = 0;
     targetWeight = waveNumber * 2;
     int enemyId = 0;
@@ -139,19 +141,28 @@ void Game::spawnEnemies(int waveNumber) {
         } else {
             spawnTimer->stop();
             spawnTimer->deleteLater();
+            isWaveSpawning = false;
         }
     });
     spawnTimer->start(1000);
 }
 
 void Game::checkEnemyNumber() {
-    if (currentEnemies.empty()){
+    if (currentEnemies.empty() && !isWaveSpawning){
         waveNumber++;
+        endRound();
         spawnEnemies(waveNumber);
     }
 }
 
 void Game::removeEnemy(Enemy* enemy) {
+    if(this == nullptr) {
+        if (enemy == nullptr) {
+            return;
+        }
+        delete enemy;
+        return;
+    }
     if (enemy->getGraphics()->scene() == &gameMap) {
         gameMap.removeItem(enemy->getGraphics());
     }

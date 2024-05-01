@@ -17,7 +17,7 @@ Player::Player(int health, int shield, int damage, int regenerationRate, int spe
         QPixmap scaledPixmap = pixmap.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation); // Scale the pixmap to 50x50 pixels
         graphics->setPixmap(scaledPixmap);
         graphics->setPos(x * 50, y * 50);
-        graphics->setZValue(1); // Set the Z-value to 1 to draw the player on top of the map tiles
+        graphics->setZValue(3); // Set the Z-value to 1 to draw the player on top of the map tiles
     }
 }
 
@@ -69,6 +69,7 @@ void Player::touchEnemy(Enemy* enemy) {
     takeDamage(enemy->getDamage());
 
     if(health <= 0) {
+        health = 0;
         return;
     }
     // Add the enemy's coin drop to the player's gold

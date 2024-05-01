@@ -87,40 +87,12 @@ void Menu::showMenu() {
     }
     this->setVisible(true);
     if(this != nullptr) {
-        qDebug() << this;
         this->raise();
     }
     playButton->show();
     rulesButton->show();
     leaderboardButton->show();
     quitButton->show();
-}
-
-void Menu::showMenuAfterGame() {
-    // Hide the game view
-    if(view){
-        view->hide();
-    }
-    /*
-
-    // Make the menu visible
-    if(this != nullptr) {
-        this->setVisible(true);
-    }
-    */
-
-    // Show the menu buttons
-    playButton->show();
-    rulesButton->show();
-    leaderboardButton->show();
-    quitButton->show();
-}
-
-void Menu::showGameOver() {
-    handleGameOver();
-    qDebug() << "Game Over signal received in Menu::showGameOver()";
-    // Return to the menu
-    showMenu();
 }
 
 void Menu::handleGameOver(){
