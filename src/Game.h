@@ -44,7 +44,7 @@ public:
     void gameOver();
     void resetGame();
     void placeTower(QMouseEvent* event);
-    void endRound();
+    void endRound() const;
     void clearTowers();
 
 private:

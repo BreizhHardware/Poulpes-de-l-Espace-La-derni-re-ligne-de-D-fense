@@ -321,7 +321,7 @@ void Game::mousePressEvent(QMouseEvent* event) {
     placeTower(event);
 }
 
-void Game::endRound() {
+void Game::endRound() const {
     if(player->getHealth() == player->getPreviousHealth()) {
         player->heal(5);
     }
@@ -330,9 +330,10 @@ void Game::endRound() {
 
 void Game::clearTowers() {
     for (auto* tower : towers) {
-        if (tower->getGraphics()->scene() == &gameMap) {
+        if (tower != nullptr && tower->getGraphics() != nullptr && tower->getGraphics()->scene() == &gameMap) {
             gameMap.removeItem(tower->getGraphics());
         }
         delete tower;
     }
+    towers.clear(); // Clear the list of towers after deleting them
 }
