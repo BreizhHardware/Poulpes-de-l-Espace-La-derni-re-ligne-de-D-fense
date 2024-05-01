@@ -21,6 +21,9 @@ int Tile::gridY() {
 }
 
 bool Tile::isPath() {
+    if(this == nullptr) {
+        return false;
+    }
     return type == Road || type == Start || type == End;
 }
 

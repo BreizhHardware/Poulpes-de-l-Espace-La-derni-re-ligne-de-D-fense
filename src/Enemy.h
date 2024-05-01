@@ -17,21 +17,28 @@ class Enemy : public Mob
 {
     Q_OBJECT
 public:
+    enum Type { P52, Gladius, Zeus, Corsair, Idris };
     Enemy(int health, int shield, int damage, int regenerationRate, int speed, std::string avatarPath,
           int x, int y, int coinDrop, int weight, Map& gameMap, int id, Game& game);
-    int getWeight() const;
-    int getCoinDrop() const;
+    Enemy(Type type, Map& gameMap, int id, Game& game);
+    [[nodiscard]] int getWeight() const;
+    [[nodiscard]] int getCoinDrop() const;
     QGraphicsPixmapItem* getGraphics();
     void moveEnemy();
     Tile* getNextPathTile();
     Tile* getCurrentTile();
     void takeDamage(int damage);
     void dropGold();
+    [[nodiscard]] Type getType() const;
+    void initializeEnemy(int health, int shield, int damage, int regenerationRate, int speed, std::string avatarPath,
+                         int x, int y, int coinDrop, int weight, int id);
+    void setPosition(int x, int y);
 
 private slots:
     void onMoveTimerTimeout();
 
 private:
+    Type type;
     int coinDrop;
     int weight;
     Map& gameMap;

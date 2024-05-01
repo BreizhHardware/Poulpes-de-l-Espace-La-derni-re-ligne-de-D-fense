@@ -127,17 +127,31 @@ void Game::spawnEnemies(int waveNumber) {
     isWaveSpawning = true;
     totalWeight = 0;
     targetWeight = waveNumber * 2;
+    if(waveNumber == 1) {
+        targetWeight = 1;
+    }
     int enemyId = 0;
 
+    // Get the start tile
+    Tile* startTile = gameMap.getStartTile();
+
     auto* spawnTimer = new QTimer();
-    connect(spawnTimer, &QTimer::timeout, [this, waveNumber, &enemyId, spawnTimer](){
+    connect(spawnTimer, &QTimer::timeout, [this, waveNumber, &enemyId, spawnTimer, startTile](){
         if(totalWeight < targetWeight){
-            // Create a new enemy on the start tile
-            auto* enemy = new Enemy(100, 0, 10, 0, 1, "../ressources/enemy.png", x, y, 10, 1, gameMap, enemyId, *this);
-            totalWeight += enemy->getWeight();
-            currentEnemies.push_back(enemy);
-            gameMap.addItem(enemy->getGraphics());
-            enemyId++;
+            for (int i = Enemy::Idris; i >= Enemy::P52; i--) {
+                Enemy::Type type = static_cast<Enemy::Type>(i);
+                Enemy enemy(type, gameMap, enemyId, *this);
+                if (totalWeight + enemy.getWeight() <= targetWeight) {
+                    totalWeight += enemy.getWeight();
+                    Enemy* newEnemy = new Enemy(type, gameMap, enemyId, *this);
+                    // Set the enemy position to the start tile
+                    newEnemy->setPosition(startTile->gridX(), startTile->gridY());
+                    currentEnemies.push_back(newEnemy);
+                    gameMap.addItem(currentEnemies.back()->getGraphics());
+                    enemyId++;
+                    break;
+                }
+            }
         } else {
             spawnTimer->stop();
             spawnTimer->deleteLater();
