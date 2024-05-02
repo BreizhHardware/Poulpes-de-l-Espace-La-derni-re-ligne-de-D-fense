@@ -5,7 +5,6 @@
 #include "Game.h"
 #include "Player.h"
 #include <QGraphicsView>
-#include <iostream>
 #include <QDebug>
 
 Game::Game(Menu* menu) : menu(menu)
@@ -279,18 +278,112 @@ void Game::placeTower(QMouseEvent* event) {
     int gridY = event->pos().y() / 50;
 
     // Check if the Tile is a other tile
-    if (gameMap.getTile(gridX, gridY)->getType() != Tile::Other) {
+    if (gameMap.getTile(gridX, gridY)->getType() == Tile::Other) {
+        placeTower(gridX, gridY, event);
+    }
+    else if(gameMap.getTile(gridX, gridY)->getType() == Tile::Tower) {
+        for (auto* tower : towers) {
+            if (tower->getGraphics()->pos() == QPointF(gridX * 50, gridY * 50)) {
+                upgradeTower(tower, event);
+            }
+        }
+    }
+    for (auto& tileList : gameMap.getTiles()) {
+        for (auto* tile : tileList) {
+            if (tile->gridX() == gridX && tile->gridY() == gridY && tile->getType() == Tile::Other) {
+                tile->setType(Tile::Tower);
+            }
+        }
+    }
+}
+
+void Game::upgradeTower(Tower* tower, QMouseEvent* event) {
+    // Create a menu to upgrade the tower
+    QMenu upgradeMenu;
+    // Check if the user has enough gold to upgrade the tower
+    if(userGold < 50) {
+        QAction* notEnoughGold = upgradeMenu.addAction("Not enough gold to upgrade");
+        QAction* selectedAction = upgradeMenu.exec(event->globalPosition().toPoint());
+    }
+    else {
+        if(tower->getDamageUpgrades() == 5 && tower->getFireRateUpgrades() == 5) {
+            QAction* maxUpgrades = upgradeMenu.addAction("Tower is fully upgraded");
+            QAction* selectedAction = upgradeMenu.exec(event->globalPosition().toPoint());
+        }
+        else if(tower->getDamageUpgrades() == 5){
+            QAction* upgradeFireRate = upgradeMenu.addAction("Upgrade Fire Rate - 50 gold");
+            QAction* selectedAction = upgradeMenu.exec(event->globalPosition().toPoint());
+            if(selectedAction == upgradeFireRate) {
+                userGold -= 50;
+                tower->upgradeFireRate();
+            }
+        }
+        else if(tower->getFireRateUpgrades() == 5){
+            QAction* upgradeDamage = upgradeMenu.addAction("Upgrade Damage - 50 gold");
+            QAction* selectedAction = upgradeMenu.exec(event->globalPosition().toPoint());
+            if(selectedAction == upgradeDamage) {
+                userGold -= 50;
+                tower->upgradeDamage();
+            }
+        }
+        else{
+            QAction* upgradeDamage = upgradeMenu.addAction("Upgrade Damage - 50 gold");
+            QAction* upgradeFireRate = upgradeMenu.addAction("Upgrade Fire Rate - 50 gold");
+
+            // Display the menu and wait for the user to select an action
+            QAction* selectedAction = upgradeMenu.exec(event->globalPosition().toPoint());
+
+            // Perform the selected upgrade
+            if (selectedAction == upgradeDamage && userGold >= 50) {
+                userGold -= 50;
+                tower->upgradeDamage();
+            } else if (selectedAction == upgradeFireRate && userGold >= 50) {
+                userGold -= 50;
+                tower->upgradeFireRate();
+            }
+        }
+    }
+}
+
+void Game::placeTower(int gridX, int gridY, QMouseEvent* event) {
+    // Clear the previous actions
+    towerMenu.clear();
+    QAction* laserTower = nullptr;
+    QAction* balisticTower = nullptr;
+    QAction* distorsionTower = nullptr;
+
+    if(userGold < 50) {
+        QAction* notEnoughGold = towerMenu.addAction("Not enough gold to place a tower");
+        QAction* selectedAction = towerMenu.exec(event->globalPosition().toPoint());
+        return;
+    }
+    else if(userGold < 75){
+        laserTower = towerMenu.addAction("Laser Tower - 50 gold");
+        balisticTower = towerMenu.addAction("Balistic Tower - 100 gold Not enough gold");
+        distorsionTower = towerMenu.addAction("Distorsion Tower - 75 gold Not enough gold");
+    }
+    else if(userGold < 100){
+        laserTower = towerMenu.addAction("Laser Tower - 50 gold");
+        balisticTower = towerMenu.addAction("Balistic Tower - 100 gold Not enough gold");
+        distorsionTower = towerMenu.addAction("Distorsion Tower - 75 gold");
+    }
+    else {
+        laserTower = towerMenu.addAction("Laser Tower - 50 gold");
+        balisticTower = towerMenu.addAction("Balistic Tower - 100 gold");
+        distorsionTower = towerMenu.addAction("Distorsion Tower - 75 gold");
+    }
+
+    // Display the menu and wait for the user to select an action
+    if(event == nullptr || towerMenu.actions().isEmpty()) {
         return;
     }
 
-    // Create a menu to select the tower type
-    QMenu towerMenu;
-    QAction* laserTower = towerMenu.addAction("Laser Tower - 50 gold");
-    QAction* balisticTower = towerMenu.addAction("Balistic Tower - 100 gold");
-    QAction* distorsionTower = towerMenu.addAction("Distorsion Tower - 75 gold");
-
-    // Display the menu and wait for the user to select an action
     QAction* selectedAction = towerMenu.exec(event->globalPosition().toPoint());
+
+    // Check if selectedAction is nullptr before using it
+    if (selectedAction == nullptr) {
+        return;
+    }
 
     // Create the selected tower and add it to the list of towers
     if (selectedAction == laserTower && userGold >= 50) {
@@ -335,5 +428,6 @@ void Game::clearTowers() {
         }
         delete tower;
     }
-    towers.clear(); // Clear the list of towers after deleting them
+    // Clear the list of towers after deleting them
+    towers.clear();
 }

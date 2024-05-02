@@ -6,6 +6,7 @@
 #define POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_ENEMY_H
 #include <QGraphicsPixmapItem>
 #include <QTimer>
+#include <QPointF>
 #include "Mob.h"
 #include "Map.h"
 #include "Game.h"
@@ -33,6 +34,7 @@ public:
     void initializeEnemy(int health, int shield, int damage, int regenerationRate, int speed, std::string avatarPath,
                          int x, int y, int coinDrop, int weight, int id);
     void setPosition(int x, int y);
+    QPointF getPosition();
 
 private slots:
     void onMoveTimerTimeout();

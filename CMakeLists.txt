@@ -35,6 +35,8 @@ add_executable(Poulpes_de_l_espace_La_derniere_ligne_de_defense ${sourceCode}
         src/Tower.cpp
         src/Tower.h
         src/PlayerDeadException.cpp
-        src/PlayerDeadException.h)
+        src/PlayerDeadException.h
+        src/Projectile.cpp
+        src/Projectile.h)
 
 target_link_libraries(Poulpes_de_l_espace_La_derniere_ligne_de_defense PRIVATE Qt6::Widgets Qt6::Sql)

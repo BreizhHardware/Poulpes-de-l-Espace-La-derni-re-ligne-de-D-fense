@@ -12,6 +12,7 @@
 #include <QVector>
 #include <QSqlQuery>
 #include <QProcessEnvironment>
+#include <QMenu>
 #include "Map.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -46,6 +47,8 @@ public:
     void placeTower(QMouseEvent* event);
     void endRound() const;
     void clearTowers();
+    void upgradeTower(Tower* tower, QMouseEvent* event);
+    void placeTower(int gridX, int gridY, QMouseEvent* event);
 
 private:
     QTimer gameTimer;
@@ -61,6 +64,7 @@ private:
     Menu* menu;
     QVector<Tower*> towers;
     bool isWaveSpawning;
+    QMenu towerMenu;
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;

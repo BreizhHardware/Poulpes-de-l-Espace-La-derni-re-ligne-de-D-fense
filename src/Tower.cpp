@@ -6,7 +6,7 @@
 #include "Tower.h"
 
 
-Tower::Tower(int damage, int fireRate, int range, int level, int cost, QPointF position,
+Tower::Tower(int damage, double fireRate, int range, int level, int cost, QPointF position,
              std::string avatarPath, Game& game) : game(game) {
     this->damage = damage;
     this->fireRate = fireRate;
@@ -51,7 +51,33 @@ void Tower::fire() {
         return;
     }
     Enemy* target = getClosestEnemyInRange(enemies);
+    qDebug() << "Firing at enemy";
+    qDebug() << "Target: " << target;
+    auto* projectile = new Projectile(position, target->getPosition());
+    qDebug() << "Projectile created";
+    game.scene()->addItem(projectile);
     fireAtClosest(target);
+}
+
+void Tower::upgradeDamage(){
+    if(damageUpgrades < 5){
+        damage *= 1.25;
+        damageUpgrades++;
+    }
+    else{
+        return;
+    }
+}
+
+void Tower::upgradeFireRate() {
+    if(fireRateUpgrades < 5){
+        fireRate *= 0.9;
+        fireTimer->setInterval(fireRate * 1000);
+        fireRateUpgrades++;
+    }
+    else{
+        return;
+    }
 }
 
 LaserTower::LaserTower(QPointF position, Game& game) : Tower(50, 1, 10, 1, 50, position,
@@ -75,12 +101,6 @@ QGraphicsPixmapItem* Tower::getGraphics() {
     return graphics;
 }
 
-void LaserTower::upgrade() {
-    damage += 5;
-    level += 1;
-    cost += 50;
-}
-
 BalisticTower::BalisticTower(QPointF position, Game& game) : Tower(150, 2, 6, 1, 100, position,
                                     "../ressources/Balistic_Tower.png", game) {
     QPixmap pixmap(QString::fromStdString(avatarPath));
@@ -96,12 +116,6 @@ BalisticTower::BalisticTower(QPointF position, Game& game) : Tower(150, 2, 6, 1,
         graphics->setPos(x * 50, y * 50);
         graphics->setZValue(1);
     }
-}
-
-void BalisticTower::upgrade() {
-    damage += 10;
-    level += 1;
-    cost += 100;
 }
 
 DistorionTower::DistorionTower(QPointF position, Game& game) : Tower(100, 1, 7, 1, 75, position,
@@ -121,8 +135,10 @@ DistorionTower::DistorionTower(QPointF position, Game& game) : Tower(100, 1, 7, 
     }
 }
 
-void DistorionTower::upgrade() {
-    damage += 5;
-    level += 1;
-    cost += 75;
+int Tower::getDamageUpgrades() const {
+    return damageUpgrades;
+}
+
+int Tower::getFireRateUpgrades() const {
+    return fireRateUpgrades;
 }

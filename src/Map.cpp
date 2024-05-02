@@ -110,3 +110,7 @@ Tile* Map::getTile(int x, int y) {
     }
     return nullptr;
 }
+
+QVector<QVector<Tile*>> Map::getTiles() {
+    return tiles;
+}

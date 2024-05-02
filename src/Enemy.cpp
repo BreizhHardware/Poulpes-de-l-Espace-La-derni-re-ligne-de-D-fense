@@ -177,3 +177,10 @@ void Enemy::setPosition(int x, int y) {
     this->y = y;
     graphics->setPos(x * 50, y * 50);
 }
+
+QPointF Enemy::getPosition() {
+    if(this == nullptr) {
+        return QPointF(0, 0);
+    }
+    return QPointF(x, y);
+}

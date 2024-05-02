@@ -11,6 +11,7 @@
 #include <QTimer>
 #include "Enemy.h"
 #include "Game.h"
+#include "Projectile.h"
 
 class Enemy;
 
@@ -21,7 +22,7 @@ class Tower : public QObject
     QOBJECT_H
 protected:
     int damage;
-    int fireRate;
+    double fireRate;
     int range;
     int level;
     int cost;
@@ -29,15 +30,20 @@ protected:
     std::string avatarPath;
     QGraphicsPixmapItem* graphics{};
     QTimer* fireTimer;
+    int damageUpgrades = 0;
+    int fireRateUpgrades = 0;
 
 public:
-    Tower(int damage, int fireRate, int range, int level, int cost, QPointF position, std::string avatarPath, Game& game);
-    virtual void upgrade() = 0;
+    Tower(int damage, double fireRate, int range, int level, int cost, QPointF position, std::string avatarPath, Game& game);
     virtual ~Tower() = default;
     QGraphicsPixmapItem* getGraphics();
     void fireAtClosest(Enemy* target = nullptr) const;
     Enemy* getClosestEnemyInRange(const QVector<Enemy*>& enemies);
     Game& game;
+    void upgradeDamage();
+    void upgradeFireRate();
+    int getDamageUpgrades() const;
+    int getFireRateUpgrades() const;
 
 public slots:
     void fire();
@@ -46,19 +52,16 @@ public slots:
 class LaserTower : public Tower {
 public:
     explicit LaserTower(QPointF position, Game& game);
-    void upgrade() override;
 };
 
 class BalisticTower : public Tower {
 public:
     explicit BalisticTower(QPointF position, Game& game);
-    void upgrade() override;
 };
 
 class DistorionTower : public Tower {
 public:
     explicit DistorionTower(QPointF position, Game& game);
-    void upgrade() override;
 };
 
 

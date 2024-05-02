@@ -18,6 +18,7 @@ public:
     int getWidth();
     int getHeight();
     Tile* getTile(int x, int y);
+    QVector<QVector<Tile*>> getTiles();
 
 private:
     QVector<QVector<Tile*>> tiles;
