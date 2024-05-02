@@ -51,10 +51,10 @@ void Tower::fire() {
         return;
     }
     Enemy* target = getClosestEnemyInRange(enemies);
-    qDebug() << "Firing at enemy";
-    qDebug() << "Target: " << target;
+    if(target == nullptr) {
+        return;
+    }
     auto* projectile = new Projectile(position, target->getPosition());
-    qDebug() << "Projectile created";
     game.scene()->addItem(projectile);
     fireAtClosest(target);
 }

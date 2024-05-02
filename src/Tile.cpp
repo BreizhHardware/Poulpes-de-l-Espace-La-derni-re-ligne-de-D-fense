@@ -9,6 +9,9 @@ Tile::Tile(Tile::Type type, QGraphicsItem *parent) : QGraphicsRectItem(parent), 
 }
 
 Tile::Type Tile::getType() const {
+    if(this == nullptr) {
+        return Null;
+    }
     return type;
 }
 

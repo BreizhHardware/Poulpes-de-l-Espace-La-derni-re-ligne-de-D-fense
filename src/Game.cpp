@@ -346,6 +346,9 @@ void Game::upgradeTower(Tower* tower, QMouseEvent* event) {
 }
 
 void Game::placeTower(int gridX, int gridY, QMouseEvent* event) {
+    if (gridX < 0 || gridX >= gameMap.getWidth() || gridY < 0 || gridY >= gameMap.getHeight()) {
+        return;
+    }
     // Clear the previous actions
     towerMenu.clear();
     QAction* laserTower = nullptr;
@@ -377,8 +380,10 @@ void Game::placeTower(int gridX, int gridY, QMouseEvent* event) {
     if(event == nullptr || towerMenu.actions().isEmpty()) {
         return;
     }
+    auto isEmpty = towerMenu.actions().isEmpty();
+    auto point = event->globalPosition().toPoint();
 
-    QAction* selectedAction = towerMenu.exec(event->globalPosition().toPoint());
+    QAction* selectedAction = towerMenu.exec(point);
 
     // Check if selectedAction is nullptr before using it
     if (selectedAction == nullptr) {
