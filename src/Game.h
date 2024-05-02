@@ -19,6 +19,7 @@
 #include "Menu.h"
 #include "Gameover.h"
 #include "Tower.h"
+#include "Projectile.h"
 
 class Player;
 
@@ -45,7 +46,7 @@ public:
     void gameOver();
     void resetGame();
     void placeTower(QMouseEvent* event);
-    void endRound() const;
+    void endRound();
     void clearTowers();
     void upgradeTower(Tower* tower, QMouseEvent* event);
     void placeTower(int gridX, int gridY, QMouseEvent* event);

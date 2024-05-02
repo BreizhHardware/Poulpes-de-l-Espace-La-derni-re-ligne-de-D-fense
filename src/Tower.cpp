@@ -18,6 +18,18 @@ Tower::Tower(int damage, double fireRate, int range, int level, int cost, QPoint
     fireTimer = new QTimer();
     connect(fireTimer, &QTimer::timeout, this, &Tower::fire);
     fireTimer->start(fireRate * 1000);
+    int xTile = position.x() * 50;
+    int yTile = position.y() * 50;
+    rangeIndicator = new QGraphicsEllipseItem(xTile - range * 10, yTile - range * 10, range * 25, range * 25, this);
+    QBrush brush;
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(QColor(0, 0, 255, 25)); // Opacité de 10%
+    rangeIndicator->setBrush(brush);
+    rangeIndicator->setZValue(5);
+    QGraphicsScene* scene = game.scene();
+    if(scene != nullptr) {
+        scene->addItem(rangeIndicator);
+    }
 }
 
 void Tower::fireAtClosest(Enemy* target) const {
@@ -55,6 +67,7 @@ void Tower::fire() {
         return;
     }
     auto* projectile = new Projectile(position, target->getPosition());
+    projectiles.push_back(projectile);
     game.scene()->addItem(projectile);
     fireAtClosest(target);
 }
@@ -114,7 +127,7 @@ BalisticTower::BalisticTower(QPointF position, Game& game) : Tower(150, 2, 6, 1,
         QPixmap scaledPixmap = pixmap.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation); // Scale the pixmap to 50x50 pixels
         graphics->setPixmap(scaledPixmap);
         graphics->setPos(x * 50, y * 50);
-        graphics->setZValue(1);
+        graphics->setZValue(2);
     }
 }
 
@@ -131,7 +144,7 @@ DistorionTower::DistorionTower(QPointF position, Game& game) : Tower(100, 1, 7, 
         QPixmap scaledPixmap = pixmap.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation); // Scale the pixmap to 50x50 pixels
         graphics->setPixmap(scaledPixmap);
         graphics->setPos(x * 50, y * 50);
-        graphics->setZValue(1);
+        graphics->setZValue(2);
     }
 }
 
@@ -141,4 +154,8 @@ int Tower::getDamageUpgrades() const {
 
 int Tower::getFireRateUpgrades() const {
     return fireRateUpgrades;
+}
+
+QGraphicsEllipseItem* Tower::getRangeIndicator() {
+    return rangeIndicator;
 }

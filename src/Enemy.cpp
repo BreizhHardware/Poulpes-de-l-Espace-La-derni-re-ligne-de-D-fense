@@ -65,7 +65,7 @@ Enemy::Enemy(Enemy::Type type, Map &gameMap, int id, Game &game)
             initializeEnemy(200, 50, 20, 0, 4, "../ressources/gladius.png", 0, 0, 20, 2, id);
             break;
         case(Zeus):
-            initializeEnemy(500, 300, 30, 0, 2, "../ressources/zeus.png", 0, 0, 30, 5, id);
+            initializeEnemy(500, 250, 30, 0, 2, "../ressources/zeus.png", 0, 0, 30, 5, id);
             break;
         case(Corsair):
             initializeEnemy(1000, 500, 40, 0, 2, "../ressources/corsair.png", 0, 0, 40, 10, id);

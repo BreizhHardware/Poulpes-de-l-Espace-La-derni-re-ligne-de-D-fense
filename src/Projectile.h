@@ -16,6 +16,7 @@ class Projectile : public QObject, public QGraphicsRectItem
     Q_OBJECT
 public:
     Projectile(QPointF start, QPointF end);
+    QGraphicsRectItem* getGraphics();
 
 public slots:
     void move();

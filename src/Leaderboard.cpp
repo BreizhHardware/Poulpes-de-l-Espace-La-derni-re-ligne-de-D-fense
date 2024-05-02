@@ -23,7 +23,7 @@ Leaderboard::Leaderboard(QWidget *parent) : QGraphicsScene(parent) {
     leaderboardModel = new QSqlTableModel(this, db);
     leaderboardModel->setTable("leaderboard");
     // Sort by number of waves completed in descending order
-    leaderboardModel->setSort(2, Qt::DescendingOrder);
+    leaderboardModel->setSort(1, Qt::DescendingOrder);
     leaderboardModel->select();
 
     leaderboardTable->setModel(leaderboardModel);

@@ -43,3 +43,7 @@ void Projectile::move() {
         delete this;
     }
 }
+
+QGraphicsRectItem* Projectile::getGraphics() {
+    return this;
+}

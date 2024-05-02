@@ -18,7 +18,7 @@ Game::Game(Menu* menu) : menu(menu)
     this->setFocusPolicy(Qt::StrongFocus);
 
     // Create the player object
-    player = new Player(100, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap, *this);
+    player = new Player(150, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap, *this);
 
     // Create the text items for the health, gold and wave number
     healthDisplay = new QGraphicsTextItem();
@@ -53,9 +53,9 @@ Game::Game(Menu* menu) : menu(menu)
 }
 
 void Game::start() {
-    // Heal the player to full health (100)
+    // Heal the player to full health (150)
     int preiousHealth = player->getHealth();
-    player->heal(100 - preiousHealth);
+    player->heal(150 - preiousHealth);
 
     // Create the map
     gameMap.generateMap(25, 14);
@@ -301,7 +301,7 @@ void Game::upgradeTower(Tower* tower, QMouseEvent* event) {
     // Create a menu to upgrade the tower
     QMenu upgradeMenu;
     // Check if the user has enough gold to upgrade the tower
-    if(userGold < 50) {
+    if(userGold < 25) {
         QAction* notEnoughGold = upgradeMenu.addAction("Not enough gold to upgrade");
         QAction* selectedAction = upgradeMenu.exec(event->globalPosition().toPoint());
     }
@@ -327,15 +327,15 @@ void Game::upgradeTower(Tower* tower, QMouseEvent* event) {
             }
         }
         else{
-            QAction* upgradeDamage = upgradeMenu.addAction("Upgrade Damage - 50 gold");
+            QAction* upgradeDamage = upgradeMenu.addAction("Upgrade Damage - 25 gold");
             QAction* upgradeFireRate = upgradeMenu.addAction("Upgrade Fire Rate - 50 gold");
 
             // Display the menu and wait for the user to select an action
             QAction* selectedAction = upgradeMenu.exec(event->globalPosition().toPoint());
 
             // Perform the selected upgrade
-            if (selectedAction == upgradeDamage && userGold >= 50) {
-                userGold -= 50;
+            if (selectedAction == upgradeDamage && userGold >= 25) {
+                userGold -= 25;
                 tower->upgradeDamage();
             } else if (selectedAction == upgradeFireRate && userGold >= 50) {
                 userGold -= 50;
@@ -380,9 +380,26 @@ void Game::placeTower(int gridX, int gridY, QMouseEvent* event) {
     if(event == nullptr || towerMenu.actions().isEmpty()) {
         return;
     }
-    auto isEmpty = towerMenu.actions().isEmpty();
-    auto point = event->globalPosition().toPoint();
+    QPoint point = event->globalPosition().toPoint();
 
+    // Check the validity of towerMenu
+    if (towerMenu.isEmpty()) {
+        qDebug() << "towerMenu is not valid";
+    } else {
+        qDebug() << "towerMenu is valid";
+    }
+
+    // Check the validity of each QAction
+    foreach (QAction* action, towerMenu.actions()) {
+        if (action == nullptr) {
+                qDebug() << "A QAction in towerMenu is not valid";
+            }
+        }
+
+    // Print out the QPoint object
+    qDebug() << "QPoint: " << point;
+
+    // Call exec()
     QAction* selectedAction = towerMenu.exec(point);
 
     // Check if selectedAction is nullptr before using it
@@ -419,7 +436,7 @@ void Game::mousePressEvent(QMouseEvent* event) {
     placeTower(event);
 }
 
-void Game::endRound() const {
+void Game::endRound() {
     if(player->getHealth() == player->getPreviousHealth()) {
         player->heal(5);
     }
@@ -428,8 +445,12 @@ void Game::endRound() const {
 
 void Game::clearTowers() {
     for (auto* tower : towers) {
-        if (tower != nullptr && tower->getGraphics() != nullptr && tower->getGraphics()->scene() == &gameMap) {
+        if (tower->getGraphics() != nullptr && tower->getGraphics()->scene() == &gameMap) {
             gameMap.removeItem(tower->getGraphics());
+        }
+        // Remove the rangeIndicator from the scene
+        if (tower->getRangeIndicator() != nullptr && tower->getRangeIndicator()->scene() == &gameMap) {
+            gameMap.removeItem(tower->getRangeIndicator());
         }
         delete tower;
     }
