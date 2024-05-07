@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QAction* actionHelp = new QAction(tr("&About"), this);
     connect(actionHelp, SIGNAL(triggered()), this, SLOT(slot_aboutMenu()));
     helpMenu->addAction(actionHelp);
-    this->setStyleSheet("background-color: #071A22;");
+    this->setStyleSheet("background-color: #071A22; color: #9EB1BD;");
 }
 
 MainWindow::~MainWindow(){
@@ -29,13 +29,13 @@ void MainWindow::slot_aboutMenu(){
                    "This game was made for the C++ course at the ISEN Nantes.<br><br>"
                    "The ships design is mainly inspired by the game Star Citizen.<br><br>"
                    "The game is open source and can be found on GitHub at the following link:<br>"
-                   "<a href='https://github.com/BreizhHardware/Poulpes-de-l-Espace-La-derniere-ligne-de-Defense'>https://github.com/BreizhHardware/Poulpes-de-l-Espace-La-derniere-ligne-de-Defense</a><br><br>"
+                   "<a style='color: white;' href='https://github.com/BreizhHardware/Poulpes-de-l-Espace-La-derniere-ligne-de-Defense'>https://github.com/BreizhHardware/Poulpes-de-l-Espace-La-derniere-ligne-de-Defense</a><br><br>"
                    "Enjoy the game!<br><br>"
                    "Star Citizen is a game by Cloud Imperium Games.<br>"
                    "This game is not affiliated with Star Citizen or Cloud Imperium Games.");
     // This is needed to interpret the text as HTML
     msgBox.setTextFormat(Qt::RichText);
-    msgBox.setStyleSheet("background-color: #071A22;");
+    msgBox.setStyleSheet("background-color: #071A22; color: #9EB1BD;");
     msgBox.setModal(true);
     msgBox.exec();
 }
