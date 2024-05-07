@@ -14,6 +14,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QGraphicsView>
+#include <QLabel>
 
 class Game;
 
@@ -34,6 +35,7 @@ private slots:
     void onQuitButtonClicked();
 
 private:
+    QLabel *title;
     QPushButton *playButton;
     QPushButton *rulesButton;
     QPushButton *leaderboardButton;

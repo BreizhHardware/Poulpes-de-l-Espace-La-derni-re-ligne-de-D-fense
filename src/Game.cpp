@@ -18,7 +18,7 @@ Game::Game(Menu* menu) : menu(menu)
     this->setFocusPolicy(Qt::StrongFocus);
 
     // Create the player object
-    player = new Player(150, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap, *this);
+    player = new Player(150, 0, 10, 10, 1, ":/ressources/player.png", 0, 0, gameMap, *this);
 
     // Create the text items for the health, gold and wave number
     healthDisplay = new QGraphicsTextItem();
@@ -263,7 +263,7 @@ void Game::gameOver() {
 
 void Game::resetGame() {
     // Recreate the player
-    player = new Player(100, 0, 10, 10, 1, "../ressources/player.png", 0, 0, gameMap, *this);
+    player = new Player(100, 0, 10, 10, 1, ":/ressources/player.png", 0, 0, gameMap, *this);
     gameMap.addItem(player->getGraphics());
 }
 

@@ -9,26 +9,42 @@ Menu::Menu(QWidget *parent) : QWidget(parent) {
     auto* layout = new QVBoxLayout(this);
     view = new QGraphicsView(this);
 
-    playButton = new QPushButton("Play", this);
+    title = new QLabel("Poulpes de l'espace: La dernière ligne de défense");
+    title->setStyleSheet("color: #00E7FF; font-size: 40px; font-weight: bold; text-align: center;");
+    layout->addWidget(title);
+    layout->setAlignment(title, Qt::AlignCenter);
+    layout->addSpacing(53);
+
+    playButton = new QPushButton("Jouer", this);
+    playButton->setStyleSheet("background-color: #0A385A; color: #9EB1BD; font-size: 40px; font-weight: bold;");
     connect(playButton, &QPushButton::clicked, this, &Menu::onPlayButtonClicked);
     layout->addWidget(playButton);
+    layout->addSpacing(53);
 
-    rulesButton = new QPushButton("Rules", this);
+    rulesButton = new QPushButton("Règles", this);
+    rulesButton->setStyleSheet("background-color: #0A385A; color: #9EB1BD; font-size: 40px; font-weight: bold;");
     connect(rulesButton, &QPushButton::clicked, this, &Menu::onRulesButtonClicked);
     layout->addWidget(rulesButton);
+    layout->addSpacing(53);
 
-    leaderboardButton = new QPushButton("Leaderboard", this);
+    leaderboardButton = new QPushButton("Classement", this);
+    leaderboardButton->setStyleSheet("background-color: #0A385A; color: #9EB1BD; font-size: 40px; font-weight: bold;");
     connect(leaderboardButton, &QPushButton::clicked, this, &Menu::onLeaderboardButtonClicked);
     layout->addWidget(leaderboardButton);
+    layout->addSpacing(53);
 
-    quitButton = new QPushButton("Quit", this);
+    quitButton = new QPushButton("Quitter", this);
+    quitButton->setStyleSheet("background-color: #0A385A; color: #9EB1BD; font-size: 40px; font-weight: bold;");
     connect(quitButton, &QPushButton::clicked, this, &Menu::onQuitButtonClicked);
     layout->addWidget(quitButton);
+    layout->addSpacing(106);
+
 
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 void Menu::removeButtons() {
+    title->hide();
     playButton->hide();
     rulesButton->hide();
     leaderboardButton->hide();
@@ -89,6 +105,7 @@ void Menu::showMenu() {
     if(this != nullptr) {
         this->raise();
     }
+    title->show();
     playButton->show();
     rulesButton->show();
     leaderboardButton->show();

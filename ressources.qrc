@@ -1,0 +1,21 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+        <file>ressources/Balistic_Tower.png</file>
+        <file>ressources/corsair.png</file>
+        <file>ressources/Distortion_Tower.png</file>
+        <file>ressources/end.png</file>
+        <file>ressources/enemy.png</file>
+        <file>ressources/gladius.png</file>
+        <file>ressources/idris.png</file>
+        <file>ressources/Laser_Tower.png</file>
+        <file>ressources/other.png</file>
+        <file>ressources/p52.png</file>
+        <file>ressources/player.png</file>
+        <file>ressources/road.png</file>
+        <file>ressources/start.png</file>
+        <file>ressources/tower.png</file>
+        <file>ressources/zeus.png</file>
+        <file>ressources/Orbitron-VariableFont_wght.ttf</file>
+    </qresource>
+</RCC>

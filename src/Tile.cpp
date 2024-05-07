@@ -35,19 +35,19 @@ void Tile::setType(Tile::Type type) {
     QPixmap pixmap;
     switch (type) {
         case Road:
-            pixmap = QPixmap(QString::fromStdString("../ressources/road.png"));
+            pixmap = QPixmap(QString::fromStdString(":/ressources/road.png"));
             break;
         case Start:
-            pixmap = QPixmap(QString::fromStdString("../ressources/start.png"));
+            pixmap = QPixmap(QString::fromStdString(":/ressources/start.png"));
             break;
         case End:
-            pixmap = QPixmap(QString::fromStdString("../ressources/end.png"));
+            pixmap = QPixmap(QString::fromStdString(":/ressources/end.png"));
             break;
         case Tower:
-            pixmap = QPixmap(QString::fromStdString("../ressources/tower.png"));
+            pixmap = QPixmap(QString::fromStdString(":/ressources/tower.png"));
             break;
         case Other:
-            pixmap = QPixmap(QString::fromStdString("../ressources/other.png"));
+            pixmap = QPixmap(QString::fromStdString(":/ressources/other.png"));
             break;
     }
     if (pixmap.isNull()) {

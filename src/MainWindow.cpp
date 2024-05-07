@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     QAction* actionHelp = new QAction(tr("&About"), this);
     connect(actionHelp, SIGNAL(triggered()), this, SLOT(slot_aboutMenu()));
     helpMenu->addAction(actionHelp);
+    this->setStyleSheet("background-color: #071A22;");
 }
 
 MainWindow::~MainWindow(){
@@ -34,6 +35,7 @@ void MainWindow::slot_aboutMenu(){
                    "This game is not affiliated with Star Citizen or Cloud Imperium Games.");
     // This is needed to interpret the text as HTML
     msgBox.setTextFormat(Qt::RichText);
+    msgBox.setStyleSheet("background-color: #071A22;");
     msgBox.setModal(true);
     msgBox.exec();
 }
