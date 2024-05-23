@@ -13,6 +13,7 @@
 #include <QSqlQuery>
 #include <QProcessEnvironment>
 #include <QMenu>
+#include <QSoundEffect>
 #include "Map.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -53,6 +54,8 @@ public:
     void upgradeTower(Tower* tower, QMouseEvent* event);
     void placeTower(int gridX, int gridY, QMouseEvent* event);
     void handleTileClick(int gridX, int gridY, QMouseEvent* event);
+    void playDeathSound();
+    void playWarpSound();
 
 private:
     QTimer gameTimer;
@@ -69,6 +72,9 @@ private:
     QVector<Tower*> towers;
     bool isWaveSpawning;
     QMenu towerMenu;
+    QSoundEffect gameOverSound;
+    QSoundEffect deathSound;
+    QSoundEffect warpSound;
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;

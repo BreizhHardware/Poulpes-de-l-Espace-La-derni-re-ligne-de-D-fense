@@ -40,6 +40,7 @@ Les règles sont simples:
 
 - CMake
 - QT6
+- QT6 Multimedia
 
 ### Compilation
 

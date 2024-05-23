@@ -7,6 +7,7 @@
 #include <QGraphicsPixmapItem>
 #include <QTimer>
 #include <QPointF>
+#include <QSoundEffect>
 #include "Mob.h"
 #include "Map.h"
 #include "Game.h"

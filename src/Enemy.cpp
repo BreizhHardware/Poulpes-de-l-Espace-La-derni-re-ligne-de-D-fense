@@ -117,12 +117,13 @@ void Enemy::moveEnemy() {
             // Check if the enemy is on the end tile and deal damage
             if (getCurrentTile() == gameMap.getEndTile()) {
                 game.player->takeDamage(getDamage());
+                game.playWarpSound();
                 game.removeEnemy(this);
             }
             // Check if the player is on the same tile as the enemy and deal damage
             if (game.player->getX() == x && game.player->getY() == y) {
                 game.player->takeDamage(getDamage());
-                game.userGold += coinDrop;
+                dropGold();
                 game.removeEnemy(this);
             }
         }
@@ -159,11 +160,13 @@ void Enemy::takeDamage(int damage) {
     healthText->setPlainText(QString::number(health));
     if (health <= 0) {
         dropGold();
+
         game.removeEnemy(this);
     }
 }
 
 void Enemy::dropGold() {
+    game.playDeathSound();
     game.userGold += coinDrop;
     game.updateDisplay();
 }

@@ -17,5 +17,8 @@
         <file>ressources/tower.png</file>
         <file>ressources/zeus.png</file>
         <file>ressources/Orbitron-VariableFont_wght.ttf</file>
+        <file>ressources/explosion.wav</file>
+        <file>ressources/warp.wav</file>
+        <file>ressources/GameOver.wav</file>
     </qresource>
 </RCC>

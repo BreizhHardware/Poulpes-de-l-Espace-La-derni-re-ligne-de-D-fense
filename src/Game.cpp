@@ -53,6 +53,13 @@ Game::Game(Menu* menu) : menu(menu)
     this->setScene(gameMap);
 
     player->updatePreviousHealth();
+
+    this->gameOverSound.setSource(QUrl::fromLocalFile(":/ressources/GameOver.wav"));
+    this->gameOverSound.setVolume(0.5f);
+    this->deathSound.setSource(QUrl::fromLocalFile(":/ressources/explosion.wav"));
+    this->deathSound.setVolume(0.5f);
+    this->warpSound.setSource(QUrl::fromLocalFile(":/ressources/warp.wav"));
+    this->warpSound.setVolume(0.5f);
 }
 
 void Game::start() {
@@ -263,6 +270,8 @@ void Game::gameOver() {
     targetWeight = 0;
 
     clearTowers();
+
+    gameOverSound.play();
 
     auto* gameOver = new Gameover(this);
     connect(gameOver, &Gameover::restartGameSignal, this, &Game::start);
@@ -483,4 +492,12 @@ void Game::wheelEvent(QWheelEvent* event) {
         // Zoom out
         this->setTransform(this->transform().scale(0.9, 0.9));
     }
+}
+
+void Game::playDeathSound() {
+    deathSound.play();
+}
+
+void Game::playWarpSound() {
+    warpSound.play();
 }
