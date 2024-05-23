@@ -22,11 +22,19 @@ Votre mission est de protéger la base spatiale des pouples de l'espace contre l
 
 ### Règles
 Les règles sont simples:
-- Vous devez défendre votre base contre les vagues d'attaques des hommes.
-- Vous pouvez placer des tours de défense pour vous aider à repousser les attaques.
-- Vous pouvez également améliorer vos tours de défense pour les rendre plus puissantes.
-- Vous pouvez déplacer votre vaisseau pour attaquer les hommes.
-- Bonne chance!
+- Objectif : Défendez votre base contre les vagues d'ennemis qui arrivent. 
+- Contrôles :
+  - Déplacement de la caméra : Utilisez les touches fléchées pour déplacer la caméra. 
+  - Déplacement du joueur : Utilisez les touches ZQSD pour déplacer votre personnage. 
+- Mécaniques de Jeu :
+  - Placer des Tours : Cliquez avec le bouton gauche de la souris pour placer une tour sur la carte. 
+  - Améliorer des Tours : Cliquez avec le bouton gauche de la souris sur une tour existante pour l'améliorer.
+- Combat :
+  - Si les ennemis touchent le joueur, ils sont tués. Le joueur subit des dégâts mais gagne de l'argent. 
+  - Si les ennemis atteignent la fin du chemin, le joueur subit des dégâts mais ne gagne pas d'argent.
+- But : Survivez à autant de vagues que possible et protégez votre base.
+
+**Bonne chance et amusez-vous bien en défendant !**
 
 ### Commandes
 - Utilisez les touches fléchées pour déplacer votre vaisseau.
