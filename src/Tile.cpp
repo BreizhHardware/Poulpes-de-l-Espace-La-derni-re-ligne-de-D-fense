@@ -4,7 +4,7 @@
 
 #include "Tile.h"
 
-Tile::Tile(Tile::Type type, QGraphicsItem *parent) : QGraphicsRectItem(parent), type(type) {
+Tile::Tile(Tile::Type type, QWidget *parent) : QPushButton(parent), type(type) {
     setType(type);
 }
 
@@ -16,11 +16,11 @@ Tile::Type Tile::getType() const {
 }
 
 int Tile::gridX() {
-    return rect().x() / 50;
+    return x() / 50;
 }
 
 int Tile::gridY() {
-    return rect().y() / 50;
+    return y() / 50;
 }
 
 bool Tile::isPath() {
@@ -53,14 +53,17 @@ void Tile::setType(Tile::Type type) {
     if (pixmap.isNull()) {
         return;
     } else {
-        graphics = new QGraphicsPixmapItem();
-        QPixmap scaledPixmap = pixmap.scaled(50, 50, Qt::KeepAspectRatio, Qt::SmoothTransformation); // Scale the pixmap to 50x50 pixels
-        graphics->setPixmap(scaledPixmap);
-        graphics->setPos(x() * 50, y() * 50);
-        graphics->setZValue(1);
+        QIcon ButtonIcon(pixmap);
+        this->setIcon(ButtonIcon);
+        this->setIconSize(QSize(50, 50));
+        this->setStyleSheet("padding: 0px; border: 0px;");
     }
 }
 
 QGraphicsPixmapItem* Tile::getGraphics() const {
     return graphics;
+}
+
+void Tile::mousePressEvent(QMouseEvent* event) {
+    emit tileClicked(gridX(), gridY(), event);
 }

@@ -29,13 +29,15 @@ class Menu;
 
 class Tower;
 
+class Map;
+
 class Game : public QGraphicsView
 {
     Q_OBJECT
 public:
     Game(Menu* menu);
     void start();
-    Map gameMap;
+    Map* gameMap;
     void updateDisplay() const;
     void spawnEnemies(int waveNumber);
     int userGold;
@@ -50,6 +52,7 @@ public:
     void clearTowers();
     void upgradeTower(Tower* tower, QMouseEvent* event);
     void placeTower(int gridX, int gridY, QMouseEvent* event);
+    void handleTileClick(int gridX, int gridY, QMouseEvent* event);
 
 private:
     QTimer gameTimer;
@@ -69,7 +72,7 @@ private:
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
-    void mousePressEvent(QMouseEvent* event) override;
+    void wheelEvent(QWheelEvent* event) override;
 };
 
 

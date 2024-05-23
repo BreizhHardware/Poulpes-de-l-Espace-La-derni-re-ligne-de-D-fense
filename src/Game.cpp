@@ -17,8 +17,11 @@ Game::Game(Menu* menu) : menu(menu)
     // Set the FocusPolicy to StrongFocus to allow the QGraphicsView to receive key events
     this->setFocusPolicy(Qt::StrongFocus);
 
+    // Create the Map object
+    gameMap = new Map(this);
+
     // Create the player object
-    player = new Player(150, 0, 10, 10, 1, ":/ressources/player.png", 0, 0, gameMap, *this);
+    player = new Player(150, 0, 10, 10, 1, ":/ressources/player.png", 0, 0, *gameMap, *this);
 
     // Create the text items for the health, gold and wave number
     healthDisplay = new QGraphicsTextItem();
@@ -36,10 +39,10 @@ Game::Game(Menu* menu) : menu(menu)
     waveDisplay->setDefaultTextColor(Qt::red);
 
     // Add all the items to the scene
-    gameMap.addItem(healthDisplay);
-    gameMap.addItem(goldDisplay);
-    gameMap.addItem(waveDisplay);
-    gameMap.addItem(player->getGraphics());
+    gameMap->addItem(healthDisplay);
+    gameMap->addItem(goldDisplay);
+    gameMap->addItem(waveDisplay);
+    gameMap->addItem(player->getGraphics());
 
     // Set the position of the text items
     healthDisplay->setPos(0, 0);
@@ -47,7 +50,7 @@ Game::Game(Menu* menu) : menu(menu)
     waveDisplay->setPos(0, 40);
 
     // Set the scene of the QGraphicsView to the gameMap
-    this->setScene(&gameMap);
+    this->setScene(gameMap);
 
     player->updatePreviousHealth();
 }
@@ -58,7 +61,7 @@ void Game::start() {
     player->heal(150 - preiousHealth);
 
     // Create the map
-    gameMap.generateMap(25, 14);
+    gameMap->generateMap(25, 14, this);
 
     // Set the user gold
     userGold = 100;
@@ -67,14 +70,14 @@ void Game::start() {
     waveNumber = 1;
 
     // Get the start tile of the map
-    Tile* startTile = gameMap.getStartTile();
+    Tile* startTile = gameMap->getStartTile();
 
     // Get start tile coordinates
     x = startTile->gridX();
     y = startTile->gridY();
 
     // Set the player position to the end tile
-    Tile* endTile = gameMap.getEndTile();
+    Tile* endTile = gameMap->getEndTile();
 
     int xEnd = endTile->gridX();
     int yEnd = endTile->gridY();
@@ -111,6 +114,12 @@ void Game::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_Down:
             player->setPosition(player->getX(), player->getY() + 1);
             break;
+        case Qt::Key_Plus:
+            this->setTransform(this->transform().scale(1.1, 1.1));
+            break;
+        case Qt::Key_Minus:
+            this->setTransform(this->transform().scale(0.9, 0.9));
+            break;
         default:
             QGraphicsView::keyPressEvent(event);
     }
@@ -141,21 +150,21 @@ void Game::spawnEnemies(int waveNumber) {
     int enemyId = 0;
 
     // Get the start tile
-    Tile* startTile = gameMap.getStartTile();
+    Tile* startTile = gameMap->getStartTile();
 
     auto* spawnTimer = new QTimer();
     connect(spawnTimer, &QTimer::timeout, [this, waveNumber, &enemyId, spawnTimer, startTile](){
         if(totalWeight < targetWeight){
             for (int i = Enemy::Idris; i >= Enemy::P52; i--) {
                 Enemy::Type type = static_cast<Enemy::Type>(i);
-                Enemy enemy(type, gameMap, enemyId, *this);
+                Enemy enemy(type, *gameMap, enemyId, *this);
                 if (totalWeight + enemy.getWeight() <= targetWeight) {
                     totalWeight += enemy.getWeight();
-                    Enemy* newEnemy = new Enemy(type, gameMap, enemyId, *this);
+                    Enemy* newEnemy = new Enemy(type, *gameMap, enemyId, *this);
                     // Set the enemy position to the start tile
                     newEnemy->setPosition(startTile->gridX(), startTile->gridY());
                     currentEnemies.push_back(newEnemy);
-                    gameMap.addItem(currentEnemies.back()->getGraphics());
+                    gameMap->addItem(currentEnemies.back()->getGraphics());
                     enemyId++;
                     break;
                 }
@@ -185,8 +194,8 @@ void Game::removeEnemy(Enemy* enemy) {
         delete enemy;
         return;
     }
-    if (enemy->getGraphics()->scene() == &gameMap) {
-        gameMap.removeItem(enemy->getGraphics());
+    if (enemy->getGraphics()->scene() == gameMap) {
+        gameMap->removeItem(enemy->getGraphics());
     }
     auto it = std::find(currentEnemies.begin(), currentEnemies.end(), enemy);
     if (it != currentEnemies.end()) {
@@ -202,16 +211,16 @@ void Game::gameOver() {
     // Remove all the enemies from the game
     while (!currentEnemies.empty()) {
         Enemy* enemy = currentEnemies.back();
-        if (enemy->getGraphics()->scene() == &gameMap) {
-            gameMap.removeItem(enemy->getGraphics());
+        if (enemy->getGraphics()->scene() == gameMap) {
+            gameMap->removeItem(enemy->getGraphics());
         }
         currentEnemies.pop_back();
         delete enemy; // Delete the enemy after it has been removed from currentEnemies
     }
 
     // Remove the player from the game
-    if (player->getGraphics()->scene() == &gameMap) {
-        gameMap.removeItem(player->getGraphics());
+    if (player->getGraphics()->scene() == gameMap) {
+        gameMap->removeItem(player->getGraphics());
     }
     delete player;
 
@@ -263,9 +272,10 @@ void Game::gameOver() {
 
 void Game::resetGame() {
     // Recreate the player
-    player = new Player(100, 0, 10, 10, 1, ":/ressources/player.png", 0, 0, gameMap, *this);
-    gameMap.addItem(player->getGraphics());
+    player = new Player(100, 0, 10, 10, 1, ":/ressources/player.png", 0, 0, *gameMap, *this);
+    gameMap->addItem(player->getGraphics());
 }
+
 
 void Game::placeTower(QMouseEvent* event) {
     // Check if the click is a left click
@@ -278,17 +288,17 @@ void Game::placeTower(QMouseEvent* event) {
     int gridY = event->pos().y() / 50;
 
     // Check if the Tile is a other tile
-    if (gameMap.getTile(gridX, gridY)->getType() == Tile::Other) {
+    if (gameMap->getTile(gridX, gridY)->getType() == Tile::Other) {
         placeTower(gridX, gridY, event);
     }
-    else if(gameMap.getTile(gridX, gridY)->getType() == Tile::Tower) {
+    else if(gameMap->getTile(gridX, gridY)->getType() == Tile::Tower) {
         for (auto* tower : towers) {
             if (tower->getGraphics()->pos() == QPointF(gridX * 50, gridY * 50)) {
                 upgradeTower(tower, event);
             }
         }
     }
-    for (auto& tileList : gameMap.getTiles()) {
+    for (auto& tileList : gameMap->getTiles()) {
         for (auto* tile : tileList) {
             if (tile->gridX() == gridX && tile->gridY() == gridY && tile->getType() == Tile::Other) {
                 tile->setType(Tile::Tower);
@@ -346,7 +356,7 @@ void Game::upgradeTower(Tower* tower, QMouseEvent* event) {
 }
 
 void Game::placeTower(int gridX, int gridY, QMouseEvent* event) {
-    if (gridX < 0 || gridX >= gameMap.getWidth() || gridY < 0 || gridY >= gameMap.getHeight()) {
+    if (gridX < 0 || gridX >= gameMap->getWidth() || gridY < 0 || gridY >= gameMap->getHeight()) {
         return;
     }
     // Clear the previous actions
@@ -386,7 +396,6 @@ void Game::placeTower(int gridX, int gridY, QMouseEvent* event) {
     if (towerMenu.isEmpty()) {
         qDebug() << "towerMenu is not valid";
     } else {
-        qDebug() << "towerMenu is valid";
     }
 
     // Check the validity of each QAction
@@ -395,9 +404,6 @@ void Game::placeTower(int gridX, int gridY, QMouseEvent* event) {
                 qDebug() << "A QAction in towerMenu is not valid";
             }
         }
-
-    // Print out the QPoint object
-    qDebug() << "QPoint: " << point;
 
     // Call exec()
     QAction* selectedAction = towerMenu.exec(point);
@@ -410,30 +416,26 @@ void Game::placeTower(int gridX, int gridY, QMouseEvent* event) {
     // Create the selected tower and add it to the list of towers
     if (selectedAction == laserTower && userGold >= 50) {
         userGold -= 50;
-        Tile* tile = gameMap.getTile(gridX, gridY);
+        Tile* tile = gameMap->getTile(gridX, gridY);
         tile->setType(Tile::Tower);
         auto* tower = new LaserTower(QPointF(gridX, gridY), *this);
         towers.push_back(tower);
-        gameMap.addItem(tower->getGraphics());
+        gameMap->addItem(tower->getGraphics());
     } else if (selectedAction == balisticTower && userGold >= 100) {
         userGold -= 100;
-        Tile* tile = gameMap.getTile(gridX, gridY);
+        Tile* tile = gameMap->getTile(gridX, gridY);
         tile->setType(Tile::Tower);
         auto* tower = new BalisticTower(QPointF(gridX, gridY), *this);
         towers.push_back(tower);
-        gameMap.addItem(tower->getGraphics());
+        gameMap->addItem(tower->getGraphics());
     } else if (selectedAction == distorsionTower && userGold >= 75) {
         userGold -= 75;
-        Tile* tile = gameMap.getTile(gridX, gridY);
+        Tile* tile = gameMap->getTile(gridX, gridY);
         tile->setType(Tile::Tower);
         auto* tower = new DistorionTower(QPointF(gridX, gridY), *this);
         towers.push_back(tower);
-        gameMap.addItem(tower->getGraphics());
+        gameMap->addItem(tower->getGraphics());
     }
-}
-
-void Game::mousePressEvent(QMouseEvent* event) {
-    placeTower(event);
 }
 
 void Game::endRound() {
@@ -445,15 +447,40 @@ void Game::endRound() {
 
 void Game::clearTowers() {
     for (auto* tower : towers) {
-        if (tower->getGraphics() != nullptr && tower->getGraphics()->scene() == &gameMap) {
-            gameMap.removeItem(tower->getGraphics());
+        if (tower->getGraphics() != nullptr && tower->getGraphics()->scene() == gameMap) {
+            gameMap->removeItem(tower->getGraphics());
         }
         // Remove the rangeIndicator from the scene
-        if (tower->getRangeIndicator() != nullptr && tower->getRangeIndicator()->scene() == &gameMap) {
-            gameMap.removeItem(tower->getRangeIndicator());
+        if (tower->getRangeIndicator() != nullptr && tower->getRangeIndicator()->scene() == gameMap) {
+            gameMap->removeItem(tower->getRangeIndicator());
         }
         delete tower;
     }
     // Clear the list of towers after deleting them
     towers.clear();
+}
+
+void Game::handleTileClick(int gridX, int gridY, QMouseEvent* event) {
+    Tile* tile = gameMap->getTile(gridX, gridY);
+    if(tile->getType() == Tile::Other) {
+        placeTower(gridX, gridY, event);
+    }
+    else if(tile->getType() == Tile::Tower) {
+        for (auto* tower : towers) {
+            if (tower->getGraphics()->pos() == QPointF(gridX * 50, gridY * 50)) {
+                upgradeTower(tower, event);
+            }
+        }
+    }
+}
+
+void Game::wheelEvent(QWheelEvent* event) {
+    // Check if the wheel event is a zoom in or zoom out
+    if(event->angleDelta().y() > 0) {
+        // Zoom in
+        this->setTransform(this->transform().scale(1.1, 1.1));
+    } else {
+        // Zoom out
+        this->setTransform(this->transform().scale(0.9, 0.9));
+    }
 }

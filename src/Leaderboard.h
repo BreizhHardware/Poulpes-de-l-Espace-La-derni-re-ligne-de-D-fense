@@ -11,6 +11,7 @@
 #include <QGraphicsProxyWidget>
 #include <QTableView>
 #include <QtSql/QSqlTableModel>
+#include <QHeaderView>
 
 class Leaderboard : public QGraphicsScene
 {

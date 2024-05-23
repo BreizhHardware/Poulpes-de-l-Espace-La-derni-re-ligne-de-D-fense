@@ -62,7 +62,7 @@ void Menu::onPlayButtonClicked() {
     game->start();
 
     // Show the game
-    view->setScene(&game->gameMap);
+    view->setScene(game->gameMap);
     view->setFocus(); // Set focus to the QGraphicsView
 
     // Get a pointer to the MainWindow

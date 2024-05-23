@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     Menu* menu = new Menu(this);
     this->setCentralWidget(menu);
     this->setWindowTitle("Poulpes de l'espace: La dernière ligne de défense");
-    this->setFixedSize(1320, 760);
+    //this->setFixedSize(1320, 760);
 
     helpMenu = menuBar()->addMenu(tr("&Help"));
     QAction* actionHelp = new QAction(tr("&About"), this);

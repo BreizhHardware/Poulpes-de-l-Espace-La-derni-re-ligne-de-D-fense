@@ -34,11 +34,12 @@ Leaderboard::Leaderboard(QWidget *parent) : QGraphicsScene(parent) {
                                 "color: #9EB1BD;" // Couleur du texte des en-têtes
                                 "border: 1px solid #0A5688;" // Couleur des bordures des en-têtes
                                 "}");
+    leaderboardTable->setFixedWidth(730);
+    leaderboardTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     // Access the corner widget
     QWidget* cornerWidget = leaderboardTable->findChild<QWidget*>("qt_scrollarea_corner");
     if (cornerWidget) {
-        // Apply the stylesheet to the corner widget
-        cornerWidget->setStyleSheet("background-color: #071A22;"); // Set the color to match your table's background color
+        cornerWidget->setStyleSheet("background-color: #071A22;");
     }
     QGraphicsProxyWidget* proxy = this->addWidget(leaderboardTable);
     proxy->setPos(0, leaderboardLabel->boundingRect().height() + 50);
