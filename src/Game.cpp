@@ -21,7 +21,7 @@ Game::Game(Menu* menu) : menu(menu)
     gameMap = new Map(this);
 
     // Create the player object
-    player = new Player(150, 0, 10, 10, 1, ":/ressources/player.png", 0, 0, *gameMap, *this);
+    player = new Player(200, 0, 10, 10, 1, ":/ressources/player.png", 0, 0, *gameMap, *this);
 
     // Create the text items for the health, gold and wave number
     healthDisplay = new QGraphicsTextItem();
@@ -65,7 +65,7 @@ Game::Game(Menu* menu) : menu(menu)
 void Game::start() {
     // Heal the player to full health (150)
     int preiousHealth = player->getHealth();
-    player->heal(150 - preiousHealth);
+    player->heal(200 - preiousHealth);
 
     // Create the map
     gameMap->generateMap(25, 14, this);
@@ -275,7 +275,7 @@ void Game::gameOver() {
 
     auto* gameOver = new Gameover(this);
     connect(gameOver, &Gameover::restartGameSignal, this, &Game::start);
-    gameOver->setFixedSize(200, 100);
+    gameOver->setFixedSize(200, 170);
     gameOver->show();
 }
 
