@@ -7,7 +7,7 @@
 #include <QMenuBar>
 #include <QAction>
 #include <QMessageBox>
-#include "Game.h"
+#include "Game/Game.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
