@@ -36,10 +36,6 @@ Les règles sont simples:
 
 **Bonne chance et amusez-vous bien en défendant !**
 
-### Commandes
-- Utilisez les touches fléchées pour déplacer votre vaisseau.
-- Faites un clic gauche pour placer une tour de défense.
-
 ## Comment jouer
 
 ### Installation
@@ -52,16 +48,12 @@ Les règles sont simples:
 
 ### Compilation
 
+```BASH
 git clone https://github.com/BreizhHardware/Poulpes-de-l-Espace-La-derniere-ligne-de-Defense.git
-
 cd Poulpes-de-l-Espace-La-derniere-ligne-de-Defense
-
 mkdir build
-
 cd build
-
 cmake ..
-
 make
-
 ./Poulpes_de_l_espace_La_derniere_ligne_de_defense
+```
