@@ -20,7 +20,7 @@ Game::Game(Menu* menu) : menu(menu)
     gameMap = new Map(this);
 
     // Create the player object
-    player = new Player(200, 0, 10, 10, 1, ":/ressources/player.png", 0, 0, *gameMap, *this);
+    player = new Player(200, 0, 10, 10, 1, ":/ressources/Other/player.png", 0, 0, *gameMap, *this);
 
     // Create the text items for the health, gold and wave number
     healthDisplay = new QGraphicsTextItem();
@@ -53,11 +53,11 @@ Game::Game(Menu* menu) : menu(menu)
 
     player->updatePreviousHealth();
 
-    this->gameOverSound.setSource(QUrl::fromLocalFile(":/ressources/GameOver.wav"));
+    this->gameOverSound.setSource(QUrl::fromLocalFile(":/ressources/Sound/GameOver.wav"));
     this->gameOverSound.setVolume(0.5f);
-    this->deathSound.setSource(QUrl::fromLocalFile(":/ressources/explosion.wav"));
+    this->deathSound.setSource(QUrl::fromLocalFile(":/ressources/Sound/explosion.wav"));
     this->deathSound.setVolume(0.5f);
-    this->warpSound.setSource(QUrl::fromLocalFile(":/ressources/warp.wav"));
+    this->warpSound.setSource(QUrl::fromLocalFile(":/ressources/Sound/warp.wav"));
     this->warpSound.setVolume(0.5f);
 }
 
@@ -108,17 +108,30 @@ void Game::start() {
 
 void Game::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
-        case Qt::Key_Left:
+        case Qt::Key_Q:
             player->setPosition(player->getX() - 1, player->getY());
             break;
-        case Qt::Key_Right:
+        case Qt::Key_D:
             player->setPosition(player->getX() + 1, player->getY());
             break;
-        case Qt::Key_Up:
+        case Qt::Key_Z:
             player->setPosition(player->getX(), player->getY() - 1);
             break;
-        case Qt::Key_Down:
+        case Qt::Key_S:
             player->setPosition(player->getX(), player->getY() + 1);
+            break;
+        case Qt::Key_Up:
+            // Move the view up
+            this->setSceneRect(this->sceneRect().x(), this->sceneRect().y() - 50, this->sceneRect().width(), this->sceneRect().height());
+            break;
+        case Qt::Key_Down:
+            this->setSceneRect(this->sceneRect().x(), this->sceneRect().y() + 50, this->sceneRect().width(), this->sceneRect().height());
+            break;
+        case Qt::Key_Left:
+            this->setSceneRect(this->sceneRect().x() - 50, this->sceneRect().y(), this->sceneRect().width(), this->sceneRect().height());
+            break;
+        case Qt::Key_Right:
+            this->setSceneRect(this->sceneRect().x() + 50, this->sceneRect().y(), this->sceneRect().width(), this->sceneRect().height());
             break;
         case Qt::Key_Plus:
             this->setTransform(this->transform().scale(1.1, 1.1));
@@ -280,7 +293,7 @@ void Game::gameOver() {
 
 void Game::resetGame() {
     // Recreate the player
-    player = new Player(100, 0, 10, 10, 1, ":/ressources/player.png", 0, 0, *gameMap, *this);
+    player = new Player(100, 0, 10, 10, 1, ":/ressources/Other/player.png", 0, 0, *gameMap, *this);
     gameMap->addItem(player->getGraphics());
 }
 

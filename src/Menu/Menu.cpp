@@ -3,6 +3,7 @@
 //
 
 #include "Menu.h"
+#include <QDebug>
 
 Menu::Menu(QWidget *parent) : QWidget(parent) {
     game = nullptr;
@@ -39,6 +40,11 @@ Menu::Menu(QWidget *parent) : QWidget(parent) {
     layout->addWidget(quitButton);
     layout->addSpacing(106);
 
+    mediaPlayer = new QSoundEffect(this);
+    mediaPlayer->setSource(QUrl::fromLocalFile(":/ressources/Sound/Menu.wav"));
+    mediaPlayer->setVolume(100);
+    mediaPlayer->setLoopCount(QSoundEffect::Infinite);
+    startMusic();
 
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
@@ -81,6 +87,7 @@ void Menu::onRulesButtonClicked() {
     view->setFixedSize(1280, 720);
     view->show();
     view->setScene(rules);
+    startMusic();
     QObject::connect(rules, &Rules::returnToMenuSignal, this, &Menu::showMenu);
 }
 
@@ -90,10 +97,12 @@ void Menu::onLeaderboardButtonClicked() {
     view->setFixedSize(1280, 720);
     view->show();
     view->setScene(leaderboard);
+    startMusic();
     QObject::connect(leaderboard, &Leaderboard::returnToMenuSignal, this, &Menu::showMenu);
 }
 
 void Menu::onQuitButtonClicked() {
+    stopMusic();
     QApplication::quit();
 }
 
@@ -114,4 +123,24 @@ void Menu::showMenu() {
 
 void Menu::handleGameOver(){
     game->deleteLater();
+}
+
+void Menu::startMusic() {
+    if(!mediaPlayer->isPlaying()) {
+        mediaPlayer->play();
+    }
+}
+
+void Menu::stopMusic() {
+    if(mediaPlayer->isPlaying()) {
+        mediaPlayer->stop();
+    }
+}
+
+void Menu::switchGameMusic() {
+    mediaPlayer->stop();
+    gameMusic = new QMediaPlayer(this);
+    gameMusic->setSource(QUrl::fromLocalFile(":/ressources/Sound/Game.mp3"));
+    gameMusic->setLoops(QMediaPlayer::Infinite);
+    gameMusic->play();
 }

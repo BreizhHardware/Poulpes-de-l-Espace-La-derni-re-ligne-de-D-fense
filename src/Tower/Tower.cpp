@@ -94,7 +94,7 @@ void Tower::upgradeFireRate() {
 }
 
 LaserTower::LaserTower(QPointF position, Game& game) : Tower(50, 1, 10, 1, 50, position,
-                                ":/ressources/Laser_Tower.png", game) {
+                                ":/ressources/Tower/Laser_Tower.png", game) {
     QPixmap pixmap(QString::fromStdString(avatarPath));
     // Check if the pixmap is null
     if(pixmap.isNull()) {
@@ -115,7 +115,7 @@ QGraphicsPixmapItem* Tower::getGraphics() {
 }
 
 BalisticTower::BalisticTower(QPointF position, Game& game) : Tower(150, 2, 6, 1, 100, position,
-                                    ":/ressources/Balistic_Tower.png", game) {
+                                    ":/ressources/Tower/Balistic_Tower.png", game) {
     QPixmap pixmap(QString::fromStdString(avatarPath));
     // Check if the pixmap is null
     if(pixmap.isNull()) {
@@ -132,7 +132,7 @@ BalisticTower::BalisticTower(QPointF position, Game& game) : Tower(150, 2, 6, 1,
 }
 
 DistorionTower::DistorionTower(QPointF position, Game& game) : Tower(100, 1, 7, 1, 75, position,
-                                        ":/ressources/Distortion_Tower.png", game) {
+                                        ":/ressources/Tower/Distortion_Tower.png", game) {
     QPixmap pixmap(QString::fromStdString(avatarPath));
     // Check if the pixmap is null
     if(pixmap.isNull()) {

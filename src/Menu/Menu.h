@@ -15,6 +15,8 @@
 #include <QPushButton>
 #include <QGraphicsView>
 #include <QLabel>
+#include <QSoundEffect>
+#include <QMediaPlayer>
 
 class Game;
 
@@ -44,7 +46,11 @@ private:
     Game *game;
     void removeButtons();
     void handleGameOver();
-
+    QSoundEffect* mediaPlayer;
+    QMediaPlayer* gameMusic;
+    void startMusic();
+    void stopMusic();
+    void switchGameMusic();
 };
 
 #endif //POULPES_DE_L_ESPACE_LA_DERNIERE_LIGNE_DE_DEFENSE_MENU_H

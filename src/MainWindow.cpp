@@ -31,6 +31,7 @@ void MainWindow::slot_aboutMenu(){
                    "The ships design is mainly inspired by the game Star Citizen.<br><br>"
                    "The game is open source and can be found on GitHub at the following link:<br>"
                    "<a style='color: white;' href='https://github.com/BreizhHardware/Poulpes-de-l-Espace-La-derniere-ligne-de-Defense'>https://github.com/BreizhHardware/Poulpes-de-l-Espace-La-derniere-ligne-de-Defense</a><br><br>"
+                   "All the music come from Star Citizen Soundtrack by Pedro Macedo Camacho.<br><br>"
                    "Enjoy the game!<br><br>"
                    "Star Citizen is a game by Cloud Imperium Games.<br>"
                    "This game is not affiliated with Star Citizen or Cloud Imperium Games.");

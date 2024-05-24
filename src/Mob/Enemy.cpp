@@ -59,22 +59,22 @@ Enemy::Enemy(Enemy::Type type, Map &gameMap, int id, Game &game)
         Mob(0, 0, 0, 0, 0, "", 0, 0){
     switch (type) {
         case(P52):
-            initializeEnemy(100, 0, 10, 0, 5, ":/ressources/p52.png", 0, 0, 10, 1, id);
+            initializeEnemy(100, 0, 10, 0, 5, ":/ressources/Enemy/p52.png", 0, 0, 10, 1, id);
             break;
         case(Gladius):
-            initializeEnemy(200, 50, 20, 0, 4, ":/ressources/gladius.png", 0, 0, 20, 2, id);
+            initializeEnemy(200, 50, 20, 0, 4, ":/ressources/Enemy/gladius.png", 0, 0, 20, 2, id);
             break;
         case(Zeus):
-            initializeEnemy(500, 250, 30, 0, 2, ":/ressources/zeus.png", 0, 0, 30, 5, id);
+            initializeEnemy(500, 250, 30, 0, 2, ":/ressources/Enemy/zeus.png", 0, 0, 30, 5, id);
             break;
         case(Corsair):
-            initializeEnemy(1000, 500, 40, 0, 2, ":/ressources/corsair.png", 0, 0, 40, 10, id);
+            initializeEnemy(1000, 500, 40, 0, 2, ":/ressources/Enemy/corsair.png", 0, 0, 40, 10, id);
             break;
         case(Idris):
-            initializeEnemy(2000, 2000, 50, 0, 1, ":/ressources/idris.png", 0, 0, 50, 20, id);
+            initializeEnemy(2000, 2000, 50, 0, 1, ":/ressources/Enemy/idris.png", 0, 0, 50, 20, id);
             break;
         default:
-            initializeEnemy(100, 0, 10, 0, 5, ":/ressources/p52.png", 0, 0, 10, 1, id);
+            initializeEnemy(100, 0, 10, 0, 5, ":/ressources/Enemy/p52.png", 0, 0, 10, 1, id);
             break;
     }
 }
