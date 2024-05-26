@@ -1,5 +1,16 @@
 # Pouples de l'espace: La dernière ligne de défense
 
+- [Présentation](#présentation)
+- [Lore](#lore)
+  - [Introduction](#introduction)
+  - [Objectif](#objectif)
+- [Règles](#règles)
+- [Comment jouer](#comment-jouer)
+  - [Installation](#installation)
+  - [Dépendances](#dépendances)
+    - [Installation des dépendances (Debian/Ubuntu)](#installation-des-dépendances-debianubuntu)
+  - [Compilation](#compilation)
+
 ## Présentation
 Ce projet est un jeu de Tower Defense développé en C++ avec le framework QT6 dans le cadre du mini-projet du cours de C++ de la 2e année à l'ISEN Nantes.
 
