@@ -79,19 +79,27 @@ void Map::generateMap(const int width, const int height, Game* game) {
         }
     }
     // Set the right orientation for each tile
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
             Tile* tile = tiles[i][j];
-            if (tile->isPath()) {
-                if (i > 0 && tiles[i - 1][j] != nullptr && tiles[i - 1][j]->isPath()) {
-                    tile->setOrientation(Tile::Down);
-                } else if (i < height - 1 && tiles[i + 1][j] != nullptr && tiles[i + 1][j]->isPath()) {
-                    tile->setOrientation(Tile::Up);
-                } else if (j > 0 && tiles[i][j - 1] != nullptr && tiles[i][j - 1]->isPath()) {
-                    tile->setOrientation(Tile::Right);
-                } else if (j < width - 1 && tiles[i][j + 1] != nullptr && tiles[i][j + 1]->isPath()) {
-                    tile->setOrientation(Tile::Left);
+            if (tile->isPath()){
+                // Determine the previous and next direction
+                Tile::Direction nextDirection = Tile::NullDir;
+                if (j < width - 1 && tiles[i][j + 1]->isPath()) {
+                    nextDirection = Tile::Right;
                 }
+                if (i < height - 1 && tiles[i + 1][j]->isPath()) {
+                    nextDirection = Tile::Up;
+                }
+                if (j > 0 && tiles[i][j - 1]->isPath()) {
+                    nextDirection = Tile::Left;
+                }
+                if (i > 0 && tiles[i - 1][j]->isPath()) {
+                    nextDirection = Tile::Down;
+                }
+
+                // Set the orientation of the tile
+                tile->setOrientation(nextDirection);
             }
         }
     }

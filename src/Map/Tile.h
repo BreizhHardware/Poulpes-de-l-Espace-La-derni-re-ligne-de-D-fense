@@ -23,11 +23,14 @@ public:
     void setType(Type type);
     QGraphicsPixmapItem* getGraphics() const;
     void mousePressEvent(QMouseEvent* event) override;
-    void setOrientation(Direction previousDirection, Direction nextDirection = Direction::NullDir);
+    void setOrientation(Direction nextDirection);
 
 private:
     Type type;
     QGraphicsPixmapItem* graphics;
+    std::string directionToString(Direction direction);
+    Direction previousDirection;
+    Direction nextDirection;
 
 signals:
     void tileClicked(int gridX, int gridY, QMouseEvent* event);
