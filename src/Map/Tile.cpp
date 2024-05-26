@@ -71,10 +71,12 @@ void Tile::mousePressEvent(QMouseEvent* event) {
 void Tile::setOrientation(Direction nextDirection) {
     QPixmap pixmap = this->icon().pixmap(this->iconSize());
 
+    /*
     qDebug() << "Previous direction: " << directionToString(this->previousDirection).c_str();
     qDebug() << "Next direction: " << directionToString(nextDirection).c_str();
+    */
     if ((this->previousDirection == Down && nextDirection == Right) || (this->previousDirection == Left && nextDirection == Up)) {
-        qDebug() << "Turn";
+        //qDebug() << "Turn";
         pixmap = QPixmap(QString::fromStdString(":/ressources/Tile/turn.png"));
         if (this->previousDirection == Left && nextDirection == Up) {
             pixmap = pixmap.transformed(QTransform().rotate(180));
