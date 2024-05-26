@@ -1,5 +1,10 @@
 # Pouples de l'espace: La dernière ligne de défense
 
+## Présentation
+Ce projet est un jeu de Tower Defense développé en C++ avec le framework QT6 dans le cadre du mini-projet du cours de C++ de la 2e année à l'ISEN Nantes.
+
+Le but est de créer un petit jeu en 2D de type « tower-defense » en utilisant le framework QT6.
+
 ## Lore
 
 ### Introduction
@@ -53,8 +58,11 @@ Durant la compliation, le jeu peut consommer jusqu'à 6 Go de RAM a cause du QRe
 #### Installation des dépendances (Debian/Ubuntu)
 
 ```BASH
-sudo apt-get install cmake qt6-base-dev qt6-multimedia-dev
+sudo apt-get install cmake g++ qt6-base-dev qt6-base-dev-tools qt6-multimedia-dev
 ```
+Dans le cas où vous utilisez WSL, il vous faudra peut-être installer un driver de serveur X comme VcXsrv pour pouvoir lancer le jeu.
+
+Dans le cas où vous utilisez une autre distribution, veuillez vous référer à la documentation de votre distribution pour installer les dépendances nécessaires.
 
 ### Compilation
 
