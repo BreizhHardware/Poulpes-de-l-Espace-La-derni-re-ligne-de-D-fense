@@ -20,6 +20,7 @@ Tower::Tower(int damage, double fireRate, int range, int level, int cost, QPoint
     fireTimer->start(fireRate * 1000);
     int xTile = position.x() * 50;
     int yTile = position.y() * 50;
+    /*
     rangeIndicator = new QGraphicsEllipseItem(xTile - range * 10, yTile - range * 10, range * 25, range * 25, this);
     QBrush brush;
     brush.setStyle(Qt::SolidPattern);
@@ -30,6 +31,7 @@ Tower::Tower(int damage, double fireRate, int range, int level, int cost, QPoint
     if(scene != nullptr) {
         scene->addItem(rangeIndicator);
     }
+    */
 }
 
 void Tower::fireAtClosest(Enemy* target) const {

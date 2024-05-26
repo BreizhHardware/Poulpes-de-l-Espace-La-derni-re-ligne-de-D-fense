@@ -67,3 +67,30 @@ QGraphicsPixmapItem* Tile::getGraphics() const {
 void Tile::mousePressEvent(QMouseEvent* event) {
     emit tileClicked(gridX(), gridY(), event);
 }
+
+void Tile::setOrientation(Direction previousDirection, Direction nextDirection) {
+    QPixmap pixmap = this->icon().pixmap(this->iconSize());
+    if ((previousDirection == Down && nextDirection == Right) || (previousDirection == Left && nextDirection == Up)) {
+        pixmap = QPixmap(QString::fromStdString(":/ressources/Tile/turn.png"));
+        if (previousDirection == Left && nextDirection == Up) {
+            pixmap = pixmap.transformed(QTransform().rotate(180));
+        }
+    }
+    else{
+        switch (previousDirection) {
+            case Up:
+            case Down:
+                // Rotate 90 degrees
+                pixmap = pixmap.transformed(QTransform().rotate(90));
+                break;
+            case Left:
+            case Right:
+                // Do nothing
+                break;
+        }
+    }
+    // Update the graphics
+    if(!pixmap.isNull()) {
+        this->setIcon(QIcon(pixmap));
+    }
+}

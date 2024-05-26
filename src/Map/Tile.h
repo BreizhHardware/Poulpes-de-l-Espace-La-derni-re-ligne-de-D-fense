@@ -14,6 +14,7 @@ class Tile : public QPushButton
     Q_OBJECT
 public:
     enum Type { Road, Start, End, Tower, Other, Null };
+    enum Direction { Up, Down, Left, Right, NullDir };
     Tile(Type type, QWidget* parent = nullptr);
     Type getType() const;
     int gridX();
@@ -22,6 +23,7 @@ public:
     void setType(Type type);
     QGraphicsPixmapItem* getGraphics() const;
     void mousePressEvent(QMouseEvent* event) override;
+    void setOrientation(Direction previousDirection, Direction nextDirection = Direction::NullDir);
 
 private:
     Type type;

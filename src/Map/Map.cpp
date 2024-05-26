@@ -78,6 +78,23 @@ void Map::generateMap(const int width, const int height, Game* game) {
             }
         }
     }
+    // Set the right orientation for each tile
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            Tile* tile = tiles[i][j];
+            if (tile->isPath()) {
+                if (i > 0 && tiles[i - 1][j] != nullptr && tiles[i - 1][j]->isPath()) {
+                    tile->setOrientation(Tile::Down);
+                } else if (i < height - 1 && tiles[i + 1][j] != nullptr && tiles[i + 1][j]->isPath()) {
+                    tile->setOrientation(Tile::Up);
+                } else if (j > 0 && tiles[i][j - 1] != nullptr && tiles[i][j - 1]->isPath()) {
+                    tile->setOrientation(Tile::Right);
+                } else if (j < width - 1 && tiles[i][j + 1] != nullptr && tiles[i][j + 1]->isPath()) {
+                    tile->setOrientation(Tile::Left);
+                }
+            }
+        }
+    }
 
     this->width = width;
     this->height = height;
